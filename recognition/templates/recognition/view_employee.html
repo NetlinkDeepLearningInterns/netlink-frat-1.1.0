@@ -1,0 +1,115 @@
+{% load static %}
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+     <!-- Required meta tags -->
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"> 
+  <link rel="stylesheet" type="text/css" href="/static/css/nstyles.css">
+  <link rel="stylesheet" type="text/css" href="/static/icons/css/all.css">
+ 
+</head>
+<body>
+  <nav class="navbar navbar-light navbar-expand-md  shadow">
+    <div class="container-fluid ">
+  
+                                <a class="navbar-brand logo" href="/"><img  src='/static/recognition/img/logo.png' height="40"  alt='logo' /> <span class="d-none d-md-inline-block poppins font-weight-bold" style="color: #1884c6;" >FRAT</span> </a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#Navbar">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div id="Navbar" class="collapse navbar-collapse justify-content-between text-center">
+  <ul class="navbar-nav ml-auto">
+  <li class="nav-item ">
+      <a class="nav-link onhover-bb  raleway " href="{%url 'dashboard' %}">Overview</a>
+  </li>
+  <li class="nav-item ">
+      <a class="nav-link onhover-bb  raleway " href="#">Control</a>
+  </li>
+  <li class="nav-item ">
+      <a class="nav-link onhover-bb  raleway "  href="{%url 'registeremp' %}">Register Employee</a>
+  </li>
+   <li class="nav-item ">
+      <a class="nav-link onhover-bb  raleway "  href="{%url 'viewemp' %}">View Employee</a>
+  </li>
+                  <ul class="navbar-nav navbar-right">  
+<li class="nav-item active"><a  class="nav-link onhover-bb raleway" id="loginTrigger" href="{% url 'logout' %}">Logout <i class="fa fa-sign-out"></i></a></li>
+</ul>
+
+
+        </div>
+    
+    </div>
+
+</nav>
+
+
+
+<div class="container-fluid">
+  <div class="row row-content p-4 shadow justify-content-center">
+ 
+<div class="col-12 text-center">
+  <legend class="border-bottom mb-4">   <h4 class="poppins font-weight-bold  text-orange mb-4 text-center">Employee Details</h4> </legend>
+  
+{% if qs %}
+<table  class="table table-hover table-striped table-bordered" >
+   <thead >
+   <tr>
+       <th scope="col">id</th>
+       <th scope="col" >UserName</th>
+       <th scope="col">Joined At</th>
+
+   </tr>
+</thead>
+<tbody>
+   {% for item in qs %}
+   <tr> 
+          <td>{{ item.0 }}</td>
+       <td>{{ item.1}}</td>
+         <td> {{item.2}} </td>
+   
+   </tr>
+   {% endfor %}
+</tbody>
+</table>
+
+<div class="card" style=" margin-top: 5em; margin-bottom: 10em;">
+ <img class="card-img-top" src="{% static 'recognition/img/attendance_graphs/hours_vs_employee/1.png'%}" alt="Card image cap">
+ <div class="card-body">
+   <p class="card-text" style="text-align: center;">Number of hours worked each day.</p>
+ </div>
+</div>
+</div>
+
+
+
+{% endif %}
+{% if messages %}
+     {% for message in messages%}
+     <div class="alert alert-{{message.tags}}" > {{message}}
+     </div>
+     {%endfor %}
+
+   {%endif%}
+
+  </div>
+</div>
+
+
+
+ <!-- Optional JavaScript -->
+   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

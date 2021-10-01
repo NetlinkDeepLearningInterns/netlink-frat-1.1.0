@@ -1,0 +1,228 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+   <!-- Required meta tags -->
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"> 
+  <link rel="stylesheet" type="text/css" href="/static/css/nstyles.css">
+  <link rel="stylesheet" type="text/css" href="/static/icons/css/all.css">
+
+
+ 
+</head>
+<body>
+  <nav class="navbar navbar-light navbar-expand-md  shadow">
+    <div class="container-fluid ">
+  
+                                <a class="navbar-brand logo" href="/"><img  src='/static/recognition/img/logo.png' height="40"  alt='logo' /> <span class="d-none d-md-inline-block poppins font-weight-bold" style="color: #1884c6;" >FRAT</span> </a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#Navbar">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div id="Navbar" class="collapse navbar-collapse justify-content-between text-center">
+  <ul class="navbar-nav ml-auto">
+  <li class="nav-item ">
+      <a class="nav-link onhover-bb  raleway " href="{%url 'dashboard' %}">Overview</a>
+  </li>
+  <li class="nav-item ">
+      <a class="nav-link onhover-bb  raleway " href="#">Control</a>
+  </li>
+  <li class="nav-item ">
+      <a class="nav-link onhover-bb  raleway "  href="{%url 'registeremp' %}">Register Employee</a>
+  </li>
+   <li class="nav-item ">
+      <a class="nav-link onhover-bb  raleway "  href="{%url 'viewemp' %}">View Employee</a>
+  </li>
+                  <ul class="navbar-nav navbar-right">  
+<li class="nav-item active"><a  class="nav-link onhover-bb raleway" id="loginTrigger" href="{% url 'logout' %}">Logout <i class="fa fa-sign-out"></i></a></li>
+</ul>
+
+
+        </div>
+    
+    </div>
+
+</nav>
+
+
+<div class="container-fluid">
+  <div class="row row-content p-4 shadow justify-content-center">
+ <div class="col-3">
+<form method="POST" >
+     {% csrf_token %}
+     <fieldset class="form-group">
+       <legend class="border-bottom mb-4">   <h4 class="poppins font-weight-bold  text-orange mb-4 text-center">Select Username And Duration</h4> </legend>
+       {{form| crispy}}
+     </fieldset>
+
+     <div class="form-group">
+       <button class="btn btn-dark w-100 rounded-pill" type="submit" value="Create"> Submit</button>
+     </div>
+   </form>
+<hr>
+<em class="text-muted">View Attendance By</em>
+<br>
+<a  href="{% url 'view-attendance-date' %}" class="btn btn-dark px-4 m-1 rounded-pill">Date</a>
+
+</div>
+<div class="col-9 text-center">
+  <legend class="border-bottom mb-4">   <h4 class="poppins font-weight-bold  text-orange mb-4 text-center">Attendance Report</h4> </legend>
+  
+{% if qs %}
+<table  class="table table-hover table-striped table-bordered" >
+   <thead >
+   <tr>
+       <th scope="col">Date</th>
+       
+       <th scope="col" >Employee</th>
+       <th scope="col">Present</th>
+       <th scope="col">Time in</th>
+       <th scope="col">Time out </th>
+       <th scope="col">Hours </th>
+   </tr>
+</thead>
+<tbody>
+   {% for item in qs %}
+   <tr> 
+          <td>{{ item.date }}</td>
+       <td>{{ item.user.username}}</td>
+    {% if item.present %}
+       <td> P </td>
+       {% else %}
+       <td> A </td>
+       {% endif %}
+       {% if item.time_in %}
+       <td>{{ item.time_in }}</td>
+      {% else %}
+      <td> - </td>
+      {% endif %}
+        {% if item.time_out %}
+       <td>{{ item.time_out }}</td>
+      {% else %}
+      <td> - </td>
+      {% endif %}
+          <td> {{item.hours}}</td>
+   </tr>
+   {% endfor %}
+</tbody>
+</table>
+
+<div class="card" style=" margin-top: 5em; margin-bottom: 10em;">
+  <img class="card-img-top" src="{% static 'recognition/img/attendance_graphs/hours_vs_date/1.png'%}" alt="Card image cap">
+  <div class="card-body">
+    <p class="card-text" style="text-align: center;">Number of hours worked each day.</p>
+  </div>
+ </div>
+ 
+
+
+{% endif %}
+{% if messages %}
+     {% for message in messages%}
+     <div class="alert alert-{{message.tags}}" > {{message}}
+     </div>
+     {%endfor %}
+
+   {%endif%}
+
+  </div>
+</div>
+
+
+<!-- <div class="container">
+ <div style="width:400px;">
+
+<form method="POST" >
+     {% csrf_token %}
+     <fieldset class="form-group">
+       <legend class="border-bottom mb-4"> Select Username And Duration </legend>
+       {{form| crispy}}
+     </fieldset>
+
+     <div class="form-group">
+       <button class="btn btn-outline-info" type="submit"> Submit</button>
+     </div>
+   </form>
+
+</div>
+
+{%if qs%}
+<table class="table"  style="margin-top: 5em;">
+   <thead class="thead-dark">
+   <tr>
+       <th scope="col">Date</th>
+       
+       <th scope="col" >Employee</th>
+       <th scope="col">Present</th>
+       <th scope="col">Time in</th>
+       <th scope="col">Time out </th>
+        <th scope="col">Hours </th>
+         <th scope="col"> Break Hours </th>
+   </tr>
+</thead>
+<tbody>
+   {% for item in qs %}
+   <tr> 
+          <td>{{ item.date }}</td>
+       <td>{{ item.user.username}}</td>
+    
+        {% if item.present %}
+       <td> P </td>
+       {% else %}
+       <td> A </td>
+       {% endif %}
+       {% if item.time_in %}
+       <td>{{ item.time_in }}</td>
+      {% else %}
+      <td> - </td>
+      {% endif %}
+        {% if item.time_out %}
+       <td>{{ item.time_out }}</td>
+      {% else %}
+      <td> - </td>
+      {% endif %}
+      <td> {{item.hours}}</td>
+         <td> {{item.break_hours}}</td>
+   </tr>
+   {% endfor %}
+</tbody>
+</table>
+
+<div class="card" style=" margin-top: 5em; margin-bottom: 10em;">
+ <img class="card-img-top" src="{% static 'recognition/img/attendance_graphs/hours_vs_date/1.png'%}" alt="Card image cap">
+ <div class="card-body">
+   <p class="card-text" style="text-align: center;">Number of hours worked each day.</p>
+ </div>
+</div>
+
+{% endif %}
+
+
+{% if messages %}
+     {% for message in messages%}
+     <div class="alert alert-{{message.tags}}" > {{message}}
+     </div>
+     {%endfor %}
+
+   {%endif%}
+
+</div> -->
+
+ <!-- Optional JavaScript -->
+   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+   
+
+</body>
+</html>

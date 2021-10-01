@@ -1,0 +1,110 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"> 
+   <link rel="stylesheet" type="text/css" href="/static/css/nstyles.css">
+   <link rel="stylesheet" type="text/css" href="/static/icons/css/all.css">
+   <style>
+    body{
+      background: white no-repeat center center fixed;
+      background-size: cover;
+      height: 100%;
+    }
+   html,body,.container-fluid{
+    height: 100%; 
+   }
+   </style>
+
+<script  type='text/javascript'
+src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'>
+$(document).ready(function(){
+  $("#train").click(function(){
+    alert("Training begun. This may take upto 5 minutes. Please wait.");
+  });
+});
+</script>
+	
+</head>
+<body>
+  <nav class="navbar navbar-light navbar-expand-md  shadow">
+    <div class="container-fluid ">
+  
+                                <a class="navbar-brand logo" href="/"><img  src='/static/recognition/img/logo.png' height="40"  alt='logo' /> <span class="d-none d-md-inline-block poppins font-weight-bold" style="color: #1884c6;" >FRAT</span> </a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#Navbar">
+<span class="navbar-toggler-icon"></span>
+</button>
+        <div id="Navbar" class="collapse navbar-collapse justify-content-between text-center">
+            <ul class="navbar-nav ml-auto">
+            <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway " href="./">Overview</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway " href="#">Control</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway "  href="{%url 'register' %}">Register Employee</a>
+            </li>
+             <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway "  href="#">View Employee</a>
+            </li>
+                            <ul class="navbar-nav navbar-right">  
+     <li class="nav-item active"><a  class="nav-link onhover-bb raleway" id="loginTrigger" href="{% url 'logout' %}">Admin <i class="fa fa-user"></i></a></li>
+   </ul>
+
+
+        </div>
+    
+    </div>
+
+</nav>
+
+<div class="container-fluid ">
+  <div  class="row row-content py-4 shadow ">
+  <div class="col-12 text-center mb-4">
+    <h2 class=" text-center poppins font-weight-bold  text-orange"> Welcome Admin </h2>
+  </div>
+  <div class="col-12">
+    <div class="row mt-4">
+      <div class="col-12 col-md-4 p-2 my-4">
+       <div style="border:1px solid #2b7a78;height: 100%;width: 100%;" class="col-12 shadow rounded text-center p-2">
+          <img style="margin-top: -50px;" class="img-fluid" width="64" src="/static/assets/add-user.png">
+          <br>
+          <a href="{%url 'register' %}" class="btn btn-lg btn-dark w-75 my-2">Register New Employee <i class="fa fa-arrow-circle-right"></i></a>
+ </div>
+               </div>
+      <div class="col-12 col-md-4 p-2 my-4">
+       <div style="border:1px solid #2b7a78;height: 100%;width: 100%;" class="col-12 shadow rounded text-center p-2">
+          <img style="margin-top: -50px;" class="img-fluid" width="64" src="/static/assets/photo.png">
+          <br>
+
+          <a href="{%url 'add-photos'%}" class="btn btn-lg btn-dark w-75 my-2">Add Employee Photos <i class="fa fa-arrow-circle-right"></i></a>
+ </div>
+               </div>
+            <div class="col-12 col-md-4  p-2 my-4">
+       <div style="border:1px solid #2b7a78;height: 100%;width: 100%;" class="col-12 shadow rounded text-center p-2">
+          <img style="margin-top: -50px;" class="img-fluid" width="64" src="/static/assets/coding.png">
+          <br>
+          <a href="{%url 'train' %}" class="btn btn-lg btn-dark w-75 my-2">Train Dataset <i class="fa fa-arrow-circle-right"></i></a>
+ </div>
+               </div>
+ 
+   </div>
+
+
+<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

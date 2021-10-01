@@ -1,0 +1,226 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"> 
+   <link rel="stylesheet" type="text/css" href="/static/css/nstyles.css">
+   <link rel="stylesheet" type="text/css" href="/static/icons/css/all.css">
+
+
+	
+</head>
+ <body>
+    <nav class="navbar navbar-light navbar-expand-md  shadow">
+        <div class="container-fluid ">
+      
+                                    <a class="navbar-brand logo" href="/"><img  src='/static/recognition/img/logo.png' height="40"  alt='logo' /> <span class="d-none d-md-inline-block poppins font-weight-bold" style="color: #1884c6;" >FRAT</span> </a>
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#Navbar">
+    <span class="navbar-toggler-icon"></span>
+</button>
+            <div id="Navbar" class="collapse navbar-collapse justify-content-between text-center">
+                <ul class="navbar-nav ml-auto">
+                <li class="nav-item ">
+                    <a class="nav-link onhover-bb  raleway " href="{%url 'dashboard' %}">Overview</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link onhover-bb  raleway " href="#">Control</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link onhover-bb  raleway "  href="{%url 'registeremp' %}">Register Employee</a>
+                </li>
+                 <li class="nav-item ">
+                    <a class="nav-link onhover-bb  raleway "  href="{%url 'viewemp' %}">View Employee</a>
+                </li>
+                                <ul class="navbar-nav navbar-right">  
+         <li class="nav-item active"><a  class="nav-link onhover-bb raleway" id="loginTrigger" href="{% url 'logout' %}">Logout <i class="fa fa-sign-out"></i></a></li>
+       </ul>
+
+    
+            </div>
+        
+        </div>
+    
+    </nav>
+
+  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <span class="navbar-brand" style="border-radius: 0% !important;" href="#"><img style="border-radius: 0% !important;" src="../static/recognition/img/logo.png" height="40"></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <ul class="navbar-nav navbar-right">
+      <li class="nav-item ">
+        <a style="font-size: 20px;" href="{%url 'view-attendance-employee' %}" class="nav-link font-weight-bold float-right px-3">By Employee</a>
+      </li>
+      <li class="nav-item ">
+        <a style="font-size: 20px;" href="{% url 'view-attendance-date' %}" class="nav-link font-weight-bold float-right px-3">By Date</a>
+      </li>
+      <li class="nav-item ">
+        <a style="font-size: 20px;" href="{% url 'dashboard' %}" class="nav-link font-weight-bold float-right px-3">Dashboard</a>
+      </li>
+      </ul>
+    </div>
+  </nav> -->
+
+  <div class="container-fluid ">
+    <div class="row row-content py-4 shadow justify-content-center">
+    <div class="col-12 text-center mb-4">
+      <h2 class=" text-center poppins font-weight-bold  text-orange"> Dashboard </h2><small><span class="text-muted "><em> (Last Updated On 20/09/2020 12:00 PM)</em></span></small>
+    </div>
+    
+    <div class="col-12 col-md-8 p-1  text-center">
+      <h4 class="poppins font-weight-bold  text-orange">Today's Statistics</h4>
+      <div class="row mt-4">
+        <div class="col-6 ">
+          <div class="card shadow text-white blue mb-3">
+      <div class="card-body">
+        <h5 class="title">Total Employees</h5>
+        <h4 class="value">{{total_num_of_emp }}</h4>
+        <hr style="background-color:white;" class="w-75 py-0 my-0">
+      </div>
+    
+    </div>
+        </div>
+        <div class="col-6 ">
+          <div class="card  shadow text-white green mb-3" >
+      <div class="card-body">
+          <h5 class="title">Present Today</h5>
+        <h4 class="value"> {{emp_present_today }}</h4>
+        <hr style="background-color:white;" class="w-75 py-0 my-0">
+      </div>
+    </div>
+        </div>
+        
+      </div>
+      <hr class="mx-2">
+      <div class="row">
+       <div class="col-12">
+      <div  class="hh-form row ">
+            <div class="col-auto text-left mb-2 m-1">
+              <em class="text-muted">View Attendance </em>
+            </div>
+            <div class=" col-auto">
+                <a  href="{% url 'view-attendance-date' %}" class="btn btn-dark px-4 rounded-pill">By Date</a>
+              </div>
+              <div class=" col-auto">
+                <a  href="{% url 'view-attendance-employee' %}" class="btn btn-dark px-4 rounded-pill">By Employee</a>
+              </div>
+            </div>
+            <div  class="hh-form row filterbydate d-none">
+             <div class="form-group  mb-4 hh-row col-8 col-sm-3">
+             
+             <div class="input-group datepicker">
+                <input id="filterbydate-date" placeholder="Date" style="background-color: white;" type="text" class="form-control custom-select" readonly>
+              </div>
+              </div>
+              <div  class="col-4 col-sm-auto  mb-4 ">
+              <button id="filterbydate-btn" class="btn btn-dark rounded-pill">Search</button>
+              </div>
+            </div>
+            <div  class="hh-form row filterbyemp d-none">
+             <div class="form-group  mb-4 hh-row col-8 col-sm-3">
+             <div class="input-group ">
+                <input id="filterbyemp-name" placeholder="Employee Name" style="background-color: white;" type="text" class="form-control ">
+              </div>
+              </div>
+    
+             <div class="form-group  mb-4 hh-row col-8 col-sm-3">
+             <div class="input-group datepicker datepicker1">
+                <input id="filterbyemp-date1" placeholder="From Date" style="background-color: white;" type="text" class="form-control custom-select" readonly>
+              </div>
+              </div>
+              <div class="form-group  mb-4 hh-row col-8 col-sm-3">
+             <div class="input-group datepicker datepicker2">
+                <input id="filterbyemp-date2" placeholder="To Date" style="background-color: white;" type="text" class="form-control custom-select" readonly>
+              </div>
+              </div>
+    
+              <div  class="col-4 col-sm-auto  mb-4 ">
+              <button id="filterbyemp-btn" class="btn btn-dark rounded-pill">Search</button>
+              </div>
+            </div>
+      <div class="table-responsive my-2">
+        {% if alog %}
+        <table  class="table table-hover table-striped table-bordered" >
+           <thead >
+           <tr>
+               <th scope="col">Date</th>
+               
+               <th scope="col" >Present Employee</th>
+               <th scope="col">Total Employee</th>
+              
+           </tr>
+        </thead>
+        <tbody>
+           {% for item in alog %}
+           <tr class="alog"> 
+                  <td class="ad">{{ item.0 }}</td>
+               <td class="ap">{{ item.1}}</td>
+              <td class="at"> {{total_num_of_emp}}</td>
+              
+           </tr>
+           {% endfor %}
+        </tbody>
+        </table>
+        {% endif %}
+    </div>
+    
+       </div> 
+      </div>
+     </div>
+     <div class="col-12 col-md-4 text-center">
+       <h4 class="poppins font-weight-bold  text-orange">Attendance Graph</h4>
+        <div class="row" >
+            <div class="col-6 col-md-12">
+            <h2> Last Week </h2>
+                <div class="card">
+              <img class="card-img-top" src="{% static 'recognition/img/attendance_graphs/last_week/1.png'%}" alt="Card image cap">
+              <div class="card-body">
+                <p class="card-text" style="text-align: center;">Number of employees present each day</p>
+              </div>
+            </div>
+            
+            
+            
+            
+            
+            </div>
+            <div class="col-6 col-md-12">
+              <h2> This Week </h2>
+             <div class="card" >
+              <img class="card-img-top" src="{% static 'recognition/img/attendance_graphs/this_week/1.png'%}" alt="Card image cap">
+              <div class="card-body">
+                <p class="card-text" style="text-align: center;">Number of employees present each day</p>
+              </div>
+            </div>
+            
+            
+            </div>
+            </div>
+       
+     </div>
+    </div>
+    </div>
+     
+
+  <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+  console.log(current)
+</script>
+ </body>
+ </html>
+
+ 
