@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-
 #utility functions
 '''
 def hours_vs_date_every_employee():
@@ -21,15 +20,7 @@ def hours_vs_date_every_employee():
 	figure=plt.figure()
 	sns.barplot(data=df,x='date',y='')
 	html_graph=mpld3.fig_to_html(fig)
-
-
 '''
-
-
-
-
-
-
 
 # Create your views here.
 
@@ -43,14 +34,6 @@ def register(request):
 			form.save() ###add user to database
 			messages.success(request, f'Employee registered successfully!')
 			return redirect('registeremp')
-		
-
-
 	else:
 		form=UserCreationForm()
 	return render(request,'users/register.html', {'form' : form})
-
-
-
-
-

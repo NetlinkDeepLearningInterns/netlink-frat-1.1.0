@@ -92,7 +92,6 @@ box-shadow: -1px 0px 8px -1px rgba(0,0,0,0.66) !important;
     margin:20px auto;
     padding: 50px 0px 50px 0px;
     border-bottom: 1px ridge;
-    background-color: transparent !important;
 }
 .nav-link
 {
@@ -187,6 +186,13 @@ color: #1884c6;
  background-color: #333333;
  color: white; 
  transition: 0.3s;
+}
+
+.form-style{
+  border: 1px solid black !important;
+  background:#1884c6!important;
+  margin-top:100px  !important; padding-top:1em !important;padding-bottom:3em !important;color:#fff;border-radius:10px;
+  margin-left:auto !important; margin-right: auto !important;
 }
 .top-border
 {
@@ -426,3 +432,4 @@ color:white;
   border:0px !important;
   outline: 0px !important;
 }
+

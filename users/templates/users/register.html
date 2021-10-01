@@ -10,7 +10,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"> 
+   <link rel="stylesheet" type="text/css" href="/static/css/nstyles.css">
+   <link rel="stylesheet" type="text/css" href="/static/icons/css/all.css">
 
    <style>
     body{
@@ -21,28 +24,50 @@
    .text-muted{
      color:#ccc !important;
    }
+   .form-style{
+    background: #1884c6;margin-top:50px ; padding-top:1em;padding-bottom:3em;color:#fff;border-radius:10px;-webkit-box-shadow: 2px 2px 15px 0px rgba(0, 3, 0, 0.7);
+-moz-box-shadow:    2px 2px 15px 0px rgba(0, 3, 0, 0.7);
+box-shadow:         2px 2px 15px 0px rgba(0, 3, 0, 0.7); margin-left:auto; margin-right: auto;
+   }
    </style>
 
 
 	
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <span class="navbar-brand" style="border-radius: 0% !important;" href="#"><img style="border-radius: 0% !important;" src="../static/recognition/img/logo.png" height="40"></span>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <ul class="navbar-nav navbar-right">
-      <li class="nav-item ">
-        <a style="font-size: 20px;" href="{% url 'dashboard' %}" class="nav-link font-weight-bold float-right px-3">Dashboard</a>
-      </li>
-      </ul>
+  <nav class="navbar navbar-light navbar-expand-md  shadow">
+    <div class="container-fluid ">
+  
+                                <a class="navbar-brand logo" href="/"><img  src='/static/recognition/img/logo.png' height="40"  alt='logo' /> <span class="d-none d-md-inline-block poppins font-weight-bold" style="color: #1884c6;" >FRAT</span> </a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#Navbar">
+<span class="navbar-toggler-icon"></span>
+</button>
+        <div id="Navbar" class="collapse navbar-collapse justify-content-between text-center">
+            <ul class="navbar-nav ml-auto">
+            <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway " href="{%url 'dashboard' %}">Overview</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway " href="#">Control</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway "  href="{%url 'registeremp' %}">Register Employee</a>
+            </li>
+             <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway "  href="{%url 'viewemp' %}">View Employee</a>
+            </li>
+                            <ul class="navbar-nav navbar-right">  
+     <li class="nav-item active"><a  class="nav-link onhover-bb raleway" id="loginTrigger" href="{% url 'logout' %}">Logout <i class="fa fa-sign-out"></i></a></li>
+   </ul>
+
+
+        </div>
+    
     </div>
-  </nav>
- <div class="col-lg-4" style="background: #1884c6;margin-top:50px ; padding-top:1em;padding-bottom:3em;color:#fff;border-radius:10px;-webkit-box-shadow: 2px 2px 15px 0px rgba(0, 3, 0, 0.7);
--moz-box-shadow:    2px 2px 15px 0px rgba(0, 3, 0, 0.7);
-box-shadow:         2px 2px 15px 0px rgba(0, 3, 0, 0.7); margin-left:auto; margin-right: auto; ">
+
+</nav>
+
+ <div class="col-lg-4 form-style" >
 
  <form method="POST" >
       {% csrf_token %}

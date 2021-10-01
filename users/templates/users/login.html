@@ -12,19 +12,16 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"> 
-    <link rel="stylesheet" type="text/css" href="../static/css/nstyles.css">
-   <style>
-    body{
-      background: #fff no-repeat center center fixed;
-      background-size: cover;
-      
-    }
-  
-   </style>
-
-
-	
-</head>
+    <link rel="stylesheet" type="text/css" href="/static/css/nstyles.css">
+<style>
+  .form-style{
+  border: 1px solid black !important;
+  background:#1884c6!important;
+  margin-top:100px  !important; padding-top:1em !important;padding-bottom:3em !important;color:#fff;border-radius:10px;
+  margin-left:auto !important; margin-right: auto !important;
+}
+</style>
+  </head>
 <body>
 
   <nav class="navbar navbar-light navbar-expand-md  shadow">
@@ -44,9 +41,7 @@
 </nav>
 
 
- <div class="col-lg-4" style="background:#1884c6;margin-top:100px ; padding-top:1em;padding-bottom:3em;color:#fff;border-radius:10px;-webkit-box-shadow: 2px 2px 15px 0px rgba(0, 3, 0, 0.7);
--moz-box-shadow:    2px 2px 15px 0px rgba(0, 3, 0, 0.7);
-box-shadow:         2px 2px 15px 0px rgba(0, 3, 0, 0.7); margin-left:auto; margin-right: auto; ">
+ <div class=" form-style col-lg-4 " >
 
   <form method="POST" >
       {% csrf_token %}
@@ -61,27 +56,22 @@ box-shadow:         2px 2px 15px 0px rgba(0, 3, 0, 0.7); margin-left:auto; margi
     </form>
 
 </div>
-
-
-
-
-
   <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-       $(document).ready(
-        function(){
-           $.ajax({
+      //  $(document).ready(
+      //   function(){
+      //      $.ajax({
                     
-                    url:"/mark_your_attendance",
-                          });
-            $.ajax({
-                     url:"/mark_your_attendance_out",
-                          });
-        }); 
+      //               url:"/mark_your_attendance",
+      //                     });
+      //       $.ajax({
+      //                url:"/mark_your_attendance_out",
+      //                     });
+      //   }); 
     </script>
   </body>
   </html>

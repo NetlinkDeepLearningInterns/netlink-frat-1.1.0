@@ -27,6 +27,7 @@ urlpatterns = [
        path('registeremp/', recog_views.registeremp, name='registeremp'),
        path('viewemp/', recog_views.viewemp, name='viewemp'),
       path('train/', recog_views.train, name='train'),
+      path('train_modal/', recog_views.train_modal, name='train_modal'),
     path('add_photos/', recog_views.add_photos, name='add-photos'),
     
      path('login/',auth_views.LoginView.as_view(template_name='users/login.html'),name='login'),

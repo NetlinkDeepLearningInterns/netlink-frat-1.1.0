@@ -69,43 +69,41 @@ $(document).ready(function(){
 <div class="container-fluid ">
   <div  class="row row-content py-4 shadow ">
   <div class="col-12 text-center mb-4">
-    <h2 class=" text-center poppins font-weight-bold  text-orange"> Welcome Admin </h2>
+    <h2 class=" text-center poppins font-weight-bold  text-orange"> Data Visualization </h2>
   </div>
-  <div class="col-12">
-    <div class="row mt-4">
-      <div class="col-12 col-md-4 p-2 my-4">
-       <div style="border:1px solid #2b7a78;height: 100%;width: 100%;" class="col-12 shadow rounded text-center p-2">
-          <img style="margin-top: -50px;" class="img-fluid" width="64" src="/static/assets/add-user.png">
-          <br>
-          <a href="{%url 'register' %}" class="btn btn-lg btn-dark w-75 my-2">Register New Employee <i class="fa fa-arrow-circle-right"></i></a>
- </div>
-               </div>
-      <div class="col-12 col-md-4 p-2 my-4">
-       <div style="border:1px solid #2b7a78;height: 100%;width: 100%;" class="col-12 shadow rounded text-center p-2">
-          <img style="margin-top: -50px;" class="img-fluid" width="64" src="/static/assets/photo.png">
-          <br>
-
-          <a href="{%url 'add-photos'%}" class="btn btn-lg btn-dark w-75 my-2">Add Employee Photos <i class="fa fa-arrow-circle-right"></i></a>
- </div>
-               </div>
-            <div class="col-12 col-md-4  p-2 my-4">
-       <div style="border:1px solid #2b7a78;height: 100%;width: 100%;" class="col-12 shadow rounded text-center p-2">
-          <img style="margin-top: -50px;" class="img-fluid" width="64" src="/static/assets/coding.png">
-          <br>
-          <a href="{%url 'train_modal' %}" class="btn btn-lg btn-dark w-75 my-2">Train Dataset <i class="fa fa-arrow-circle-right"></i></a>
- </div>
-               </div>
- 
-   </div>
-   </div>
-   </div>
-   </div>
+  <div class="col-12 text-center train-load">
+    <h3>Please wait for a while. Training may take some time.</h3>
+    <div id="status" class="circle-loader my-3 ">
+        <div class="checkmark draw"></div>  
+</div>
+</div>
+<div class="col-12 text-center train-done d-none">
+    <img class="img-fluid" src="{% static 'recognition/img/training_visualisation.png' %}" />    
+</div>
+</div>
+</div>
 
 
 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+       $(document).ready(
+        function(){
+           $.ajax({
+                 type:'GET',
+                 dataType:'text',   
+                    url:"/train",
+                    success:function(data){
+                        if(data==="success"){
+                            $('.train-load').addClass('d-none');
+                            $('.train-done').removeClass('d-none');
+                        }
+                    }
+                          });
+
+        });
+        </script>
 </body>
 </html>

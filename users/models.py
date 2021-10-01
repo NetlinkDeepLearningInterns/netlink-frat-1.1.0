@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-
 import datetime
 
 class Present(models.Model):
@@ -13,4 +12,3 @@ class Time(models.Model):
 	date = models.DateField(default=datetime.date.today)
 	time=models.DateTimeField(null=True,blank=True)
 	out=models.BooleanField(default=False)
-	
