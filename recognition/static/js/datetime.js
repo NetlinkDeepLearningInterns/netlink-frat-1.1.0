@@ -24,7 +24,6 @@ var defaults = {
 
 
 $(function() {
-  var optionsDatetime = $.extend({}, defaults, {format:'YYYY-MM-DD HH:mm'});
   var optionsDate = $.extend({}, defaults, {format:'YYYY-MM-DD'});
   var optionsTime = $.extend({}, defaults, {format:'HH:mm'});
   

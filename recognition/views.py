@@ -58,10 +58,10 @@ def username_present(username):
 	return False
 
 def create_dataset(username):
-	id = username
-	if(os.path.exists('face_recognition_data/training_dataset/{}/'.format(id))==False):
-		os.makedirs('face_recognition_data/training_dataset/{}/'.format(id))
-	directory='face_recognition_data/training_dataset/{}/'.format(id)
+	eid = username
+	if(os.path.exists('face_recognition_data/training_dataset/{}/'.format(eid))==False):
+		os.makedirs('face_recognition_data/training_dataset/{}/'.format(eid))
+	directory='face_recognition_data/training_dataset/{}/'.format(eid)
 
 	# Detect face
 	#Loading the HOG face detector and the shape predictpr for allignment
@@ -148,7 +148,7 @@ def predict(face_aligned,svc,threshold=0.7):
 		faces_encodings=face_recognition.face_encodings(face_aligned,known_face_locations=x_face_locations)
 		if(len(faces_encodings)==0):
 			return ([-1],[0])
-	except:
+	except Exception:
 		return ([-1],[0])
 
 	prob=svc.predict_proba(faces_encodings)
@@ -166,7 +166,7 @@ def vizualize_Data(embedded, targets,):
 		idx = targets == t
 		plt.scatter(X_embedded[idx, 0], X_embedded[idx, 1], label=t)
 
-	plt.legend(bbox_to_anchor=(1, 1));
+	plt.legend(bbox_to_anchor=(1, 1))
 	rcParams.update({'figure.autolayout': True})
 	plt.tight_layout()	
 	plt.savefig('./recognition/static/recognition/img/training_visualisation.png')
@@ -179,7 +179,7 @@ def update_attendance_in_db_in(present):
 		user=User.objects.get(username=person)
 		try:
 		   qs=Present.objects.get(user=user,date=today)
-		except :
+		except Exception:
 			qs= None
 		
 		if qs is None:
@@ -667,19 +667,18 @@ def view_my_attendance_employee_login(request):
 			if date_to < date_from:
 				messages.warning(request, f'Invalid date selection.')
 				return redirect('view-my-attendance-employee-login')
-			else:
-				time_qs=time_qs.filter(date__gte=date_from).filter(date__lte=date_to).order_by('-date')
-				present_qs=present_qs.filter(date__gte=date_from).filter(date__lte=date_to).order_by('-date')
 			
-				if (len(time_qs)>0 or len(present_qs)>0):
-					qs=hours_vs_date_given_employee(present_qs,time_qs,admin=False)
-					return render(request,'recognition/employee_dashboard.html', {'form' : form, 'qs' :qs})
-				else:
-					messages.warning(request, f'No records for selected duration.')
-					return redirect('view-my-attendance-employee-login')
-	else:
-		form=DateForm_2()
-		return render(request,'recognition/employee_dashboard.html', {'form' : form, 'qs' :qs})
+			time_qs=time_qs.filter(date__gte=date_from).filter(date__lte=date_to).order_by('-date')
+			present_qs=present_qs.filter(date__gte=date_from).filter(date__lte=date_to).order_by('-date')
+			
+			if (len(time_qs)>0 or len(present_qs)>0):
+				qs=hours_vs_date_given_employee(present_qs,time_qs,admin=False)
+				return render(request,'recognition/employee_dashboard.html', {'form' : form, 'qs' :qs})
+			messages.warning(request, f'No records for selected duration.')
+			return redirect('view-my-attendance-employee-login')
+	
+	form=DateForm_2()
+	return render(request,'recognition/employee_dashboard.html', {'form' : form, 'qs' :qs})
 
 @login_required
 def dashboard(request):
@@ -692,20 +691,16 @@ def dashboard(request):
 		last_week_emp_count_vs_date()
 		return render(request,"recognition/test_dashboard.html", {'total_num_of_emp' : total_num_of_emp, 'emp_present_today': emp_present_today,'alog':data})
 	# return render(request, 'recognition/admin_dashboard.html')
-	else:
-		print("not admin")
-
-		return redirect('view-my-attendance-employee-login')
+	print("not admin")
+	return redirect('view-my-attendance-employee-login')
 
 @login_required
 def registeremp(request):
 	if(request.user.username=='admin'):
 		print("admin")
 		return render(request, 'recognition/admin_dashboard.html')
-	else:
-		print("not admin")
-
-		return render(request,'recognition/employee_dashboard.html')
+	print("not admin")
+	return render(request,'recognition/employee_dashboard.html')
 
 def viewemp(request):
 	records=None
@@ -722,10 +717,9 @@ def viewemp(request):
 			print(e)
 		# print(qs)
 		return render(request, 'recognition/view_employee.html',{'qs' : records})
-	else:
-		print("not admin")
 
-		return render(request,'/')
+	print("not admin")
+	return render(request,'/')
 
 @login_required
 def add_photos(request):
@@ -739,13 +733,12 @@ def add_photos(request):
 			create_dataset(username)
 			messages.success(request, f'Dataset Created')
 			return redirect('add-photos')
-		else:
-			messages.warning(request, f'No such username found. Please register employee first.')
-			return redirect('add-photos')
 
-	else:
-		form=usernameForm()
-		return render(request,'recognition/add_photos.html', {'form' : form})
+		messages.warning(request, f'No such username found. Please register employee first.')
+		return redirect('add-photos')
+
+	form=usernameForm()
+	return render(request,'recognition/add_photos.html', {'form' : form})
 
 @login_required
 def train(request):
@@ -777,7 +770,7 @@ def train(request):
 				X.append((face_recognition.face_encodings(image)[0]).tolist())		
 				y.append(person_name)
 				i+=1
-			except:
+			except Exception :
 				print("removed")
 				os.remove(imagefile)
 
@@ -836,12 +829,12 @@ def view_attendance_date(request):
 			if(len(time_qs)>0 or len(present_qs)>0):
 				qs=hours_vs_employee_given_date(present_qs,time_qs)
 				return render(request,'recognition/view_attendance_date.html', {'form' : form,'qs' : qs })
-			else:
-				messages.warning(request, f'No records for selected date.')
-				return redirect('view-attendance-date')
-	else:
-		form=DateForm()
-		return render(request,'recognition/view_attendance_date.html', {'form' : form, 'qs' : qs})
+			
+			messages.warning(request, f'No records for selected date.')
+			return redirect('view-attendance-date')
+
+	form=DateForm()
+	return render(request,'recognition/view_attendance_date.html', {'form' : form, 'qs' : qs})
 
 @login_required
 def view_attendance_employee(request):
@@ -867,21 +860,20 @@ def view_attendance_employee(request):
 				if date_to < date_from:
 					messages.warning(request, f'Invalid date selection.')
 					return redirect('view-attendance-employee')
-				else:
-					time_qs=time_qs.filter(date__gte=date_from).filter(date__lte=date_to).order_by('-date')
-					present_qs=present_qs.filter(date__gte=date_from).filter(date__lte=date_to).order_by('-date')
+				
+				time_qs=time_qs.filter(date__gte=date_from).filter(date__lte=date_to).order_by('-date')
+				present_qs=present_qs.filter(date__gte=date_from).filter(date__lte=date_to).order_by('-date')
 					
-					if (len(time_qs)>0 or len(present_qs)>0):
-						qs=hours_vs_date_given_employee(present_qs,time_qs,admin=True)
-						return render(request,'recognition/view_attendance_employee.html', {'form' : form, 'qs' :qs})
-					else:
-						#print("inside qs is None")
-						messages.warning(request, f'No records for selected duration.')
-						return redirect('view-attendance-employee')
-			else:
-				print("invalid username")
-				messages.warning(request, f'No such username found.')
+				if (len(time_qs)>0 or len(present_qs)>0):
+					qs=hours_vs_date_given_employee(present_qs,time_qs,admin=True)
+					return render(request,'recognition/view_attendance_employee.html', {'form' : form, 'qs' :qs})
+			
+				messages.warning(request, f'No records for selected duration.')
 				return redirect('view-attendance-employee')
-	else:
-		form=UsernameAndDateForm()
-		return render(request,'recognition/view_attendance_employee.html', {'form' : form, 'qs' :qs})
+		
+			print("invalid username")
+			messages.warning(request, f'No such username found.')
+			return redirect('view-attendance-employee')
+	
+	form=UsernameAndDateForm()
+	return render(request,'recognition/view_attendance_employee.html', {'form' : form, 'qs' :qs})

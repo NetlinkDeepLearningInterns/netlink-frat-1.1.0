@@ -33,23 +33,23 @@ transition: 0.5s;
 }
 
 .jumbotron {
-   margin-left: 0px;
-    margin-right:0px;
-    padding-left: 0px;
-    padding-right:0px;
-    padding-bottom: 0px;
+   margin-left: 0;
+    margin-right:0;
+    padding-left: 0;
+    padding-right:0;
+    padding-bottom: 0;
     background-color: #1884c6;
     background-image: url('../assets/divider.png');
     background-repeat: no-repeat;
     background-size: 100% 100px;
     background-position: bottom;
     color:floralwhite;
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 .navbar
 {
-  border-radius: 0px;
+  border-radius: 0;
 
 }
 .navbar-brand
@@ -83,14 +83,14 @@ transition: 0.5s;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .shadow-sm-alt {
--webkit-box-shadow: -1px 0px 8px -1px rgba(0,0,0,0.66) !important;
--moz-box-shadow: -1px 0px 8px -1px rgba(0,0,0,0.66) !important;
-box-shadow: -1px 0px 8px -1px rgba(0,0,0,0.66) !important;
+-webkit-box-shadow: -1px 0 8px -1px rgba(0,0,0,0.66) !important;
+-moz-box-shadow: -1px 0 8px -1px rgba(0,0,0,0.66) !important;
+box-shadow: -1px 0 8px -1px rgba(0,0,0,0.66) !important;
 }
 
 .row-content {
     margin:20px auto;
-    padding: 50px 0px 50px 0px;
+    padding: 50px 0px ;
     border-bottom: 1px ridge;
 }
 .nav-link
@@ -98,7 +98,7 @@ box-shadow: -1px 0px 8px -1px rgba(0,0,0,0.66) !important;
   transition: 0.3s;
   font-weight: 600;
   font-size: 18px;
-  padding: 20px 20px !important;
+  padding: 20px !important;
 
 }
 .onhover-bb {
@@ -345,7 +345,7 @@ border:1px solid #1884c6;
 { 
 border: none;
 border-bottom: 1px solid #ccc;
-border-radius: 0px;
+border-radius: 0;
 background-color: transparent;
 transition: 0.3s;
 }
@@ -429,7 +429,7 @@ color:white;
 
 .pause,.pause:focus,.pause:active{
 
-  border:0px !important;
-  outline: 0px !important;
+  border:0 !important;
+  outline: 0 !important;
 }
 
