@@ -90,7 +90,7 @@ box-shadow: -1px 0 8px -1px rgba(0,0,0,0.66) !important;
 
 .row-content {
     margin:20px auto;
-    padding: 50px 0px ;
+    padding: 50px 0 ;
     border-bottom: 1px ridge;
 }
 .nav-link
