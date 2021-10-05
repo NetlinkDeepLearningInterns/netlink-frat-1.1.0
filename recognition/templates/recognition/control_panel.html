@@ -1,0 +1,117 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"> 
+   <link rel="stylesheet" type="text/css" href="/static/css/nstyles.css">
+   <link rel="stylesheet" type="text/css" href="/static/icons/css/all.css">
+
+
+	
+</head>
+ <body>
+    <nav class="navbar navbar-light navbar-expand-md  shadow">
+        <div class="container-fluid ">
+      
+                                    <a class="navbar-brand logo" href="/"><img  src='/static/recognition/img/logo.png' height="40"  alt='logo' /> <span class="d-none d-md-inline-block poppins font-weight-bold" style="color: #1884c6;" >FRAT</span> </a>
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#Navbar">
+    <span class="navbar-toggler-icon"></span>
+</button>
+            <div id="Navbar" class="collapse navbar-collapse justify-content-between text-center">
+                <ul class="navbar-nav ml-auto">
+                <li class="nav-item ">
+                    <a class="nav-link onhover-bb  raleway " href="{%url 'dashboard' %}">Overview</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link onhover-bb  raleway " href="#">Control</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link onhover-bb  raleway "  href="{%url 'registeremp' %}">Register Employee</a>
+                </li>
+                 <li class="nav-item ">
+                    <a class="nav-link onhover-bb  raleway "  href="{%url 'viewemp' %}">View Employee</a>
+                </li>
+                                <ul class="navbar-nav navbar-right">  
+         <li class="nav-item active"><a  class="nav-link onhover-bb raleway" id="loginTrigger" href="{% url 'logout' %}">Logout <i class="fa fa-sign-out"></i></a></li>
+       </ul>
+
+    
+            </div>
+        
+        </div>
+    
+    </nav>
+<div class="container-fluid ">
+<div class="row row-content m-1 p-1 pb-4 shadow justify-content-center">
+<div class="col-12 p-1 mt-4 text-center">
+  
+<h2 class=" text-center poppins font-weight-bold  text-orange mb-4"> Control Room </h2>
+
+  <div class="row">
+    <div style=" border-right: 1px solid #ddd;" class="col-12 col-sm-auto">
+      <div id="clock" class=""></div>
+    </div>
+    <div style=" border-right: 1px solid #ddd;" class="col-auto col-sm">
+       <h5 class="title text-orange">Present Today</h5>
+    <h4 class="value montserrat text-dark">{{emp_present_today }}</h4>
+    </div>
+    <div class="col row">
+      <div class="col-6">
+      <h5 class="title text-orange">Pause</h5>
+      <br>
+      <button class="btn btn-link pause"><h4 class="value montserrat text-dark"><i class="fa fa-pause"></i></h4></button>
+      </div>
+      <div class="col-6">
+      <h5 class="title text-orange">Start</h5>
+      <br>
+      <button class="btn btn-link play disabled"><h4 class="value montserrat text-dark"><i class="fa fa-play"></i></h4></button>
+      </div>
+    </div>
+
+  </div>
+    <hr class="mx-2">
+  <div class="row">
+   <div style=" border-right: 1px solid #ddd;" class="col-12 col-sm-6">
+     <h4 class=" text-center poppins font-weight-bold  text-orange"> In-Cameras </h4>
+     <div  class="card bg-dark p-5 m-2">
+       camera1
+     </div>
+     <div  class="card bg-dark p-5 m-2">
+       camera2
+     </div>
+   </div>
+   <div class="col-12 col-sm-6">
+     <h4 class=" text-center poppins font-weight-bold  text-orange"> Out-Cameras </h4>
+     <div  class="card bg-dark p-5 m-2">
+       camera1
+     </div>
+     <div  class="card bg-dark p-5 m-2">
+       camera2
+     </div>
+   </div>
+
+  </div>
+ </div>
+</div>
+</div>
+
+
+  <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+
+</script>
+ </body>
+ </html>
