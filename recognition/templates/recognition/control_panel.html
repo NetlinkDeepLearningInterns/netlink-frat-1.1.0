@@ -32,7 +32,7 @@
                     <a class="nav-link onhover-bb  raleway " href="{%url 'dashboard' %}">Overview</a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link onhover-bb  raleway " href="#">Control</a>
+                    <a class="nav-link onhover-bb  raleway " href="{%url 'control' %}}">Control</a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link onhover-bb  raleway "  href="{%url 'registeremp' %}">Register Employee</a>
@@ -83,16 +83,16 @@
    <div style=" border-right: 1px solid #ddd;" class="col-12 col-sm-6">
      <h4 class=" text-center poppins font-weight-bold  text-orange"> In-Cameras </h4>
      <div  class="card bg-dark p-5 m-2">
-       camera1
+       <img src="{{ {%url 'videofeed' cam='101' %} }}" class="img-fluid">
      </div>
      <div  class="card bg-dark p-5 m-2">
-       camera2
+
      </div>
    </div>
    <div class="col-12 col-sm-6">
      <h4 class=" text-center poppins font-weight-bold  text-orange"> Out-Cameras </h4>
      <div  class="card bg-dark p-5 m-2">
-       camera1
+              <img src="{{ {%url 'videofeed' cam='201' %} }}" class="img-fluid">
      </div>
      <div  class="card bg-dark p-5 m-2">
        camera2
