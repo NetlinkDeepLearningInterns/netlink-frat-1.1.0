@@ -44,41 +44,41 @@ mpl.use('Agg')
 
 #utility functions:
 
-class VideoCamera(object):
-    def __init__(self,cam):
-    	src='rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/'+cam+'/'
-        self.video = cv2.VideoCapture(src)
-        (self.grabbed, self.frame) = self.video.read()
-        threading.Thread(target=self.update, args=()).start()
+# class VideoCamera(object):
+#     def __init__(self,cam):
+#     	src='rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/'+cam+'/'
+#         self.video = cv2.VideoCapture(src)
+#         (self.grabbed, self.frame) = self.video.read()
+#         threading.Thread(target=self.update, args=()).start()
 
-    def __del__(self):
-        self.video.release()
+#     def __del__(self):
+#         self.video.release()
 
-    def get_frame(self):
-        image = self.frame
-        _, jpeg = cv2.imencode('.jpg', image)
-        return jpeg.tobytes()
+#     def get_frame(self):
+#         image = self.frame
+#         _, jpeg = cv2.imencode('.jpg', image)
+#         return jpeg.tobytes()
 
-    def update(self):
-        while True:
-            (self.grabbed, self.frame) = self.video.read()
-
-
-def gen(camera):
-    while True:
-        frame = camera.get_frame()
-        yield(b'--frame\r\n'
-              b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+#     def update(self):
+#         while True:
+#             (self.grabbed, self.frame) = self.video.read()
 
 
-@gzip.gzip_page
-def livefeed(request):
-    cam=request.GET.get('cam','')
-    try:
-        cam = VideoCamera(cam)
-        return StreamingHttpResponse(gen(cam), content_type="multipart/x-mixed-replace;boundary=frame")
-    except:  
-        pass
+# def gen(camera):
+#     while True:
+#         frame = camera.get_frame()
+#         yield(b'--frame\r\n'
+#               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
+# @gzip.gzip_page
+# def livefeed(request):
+#     cam=request.GET.get('cam','')
+#     try:
+#         cam = VideoCamera(cam)
+#         return StreamingHttpResponse(gen(cam), content_type="multipart/x-mixed-replace;boundary=frame")
+#     except:  
+#         pass
 
 def create_connection(db_file):
     conn = None
@@ -534,7 +534,7 @@ def mark_your_attendance(request):
 		present[encoder.inverse_transform([i])[0]] = False
 
 # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
-	vs = VideoStream(src='rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/').start()
+	vs = VideoStream(src=0).start()
 	sampleNum = 0
 
 	while(True):

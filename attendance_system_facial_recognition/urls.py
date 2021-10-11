@@ -25,7 +25,7 @@ urlpatterns = [
     
       path('dashboard/', recog_views.dashboard, name='dashboard'),
        path('registeremp/', recog_views.registeremp, name='registeremp'),
-       path(r'videofeed/(?P<cam>)', recog_views.livefeed, name='videofeed'),
+       # path(r'videofeed/(?P<cam>)', recog_views.livefeed, name='videofeed'),
        path('viewemp/', recog_views.viewemp, name='viewemp'),
       path('control/', recog_views.control, name='control'),
       path('train/', recog_views.train, name='train'),
