@@ -82,21 +82,17 @@
   <div class="row">
    <div style=" border-right: 1px solid #ddd;" class="col-12 col-sm-6">
      <h4 class=" text-center poppins font-weight-bold  text-orange"> In-Cameras </h4>
-     <div  class="card bg-dark p-5 m-2">
-       <img src="{{ {%url 'videofeed' cam='101' %} }}" class="img-fluid">
+     <div  class="card m-2">
+       <img src="/videofeed/101" class="img-fluid rounded">
      </div>
-     <div  class="card bg-dark p-5 m-2">
 
-     </div>
    </div>
    <div class="col-12 col-sm-6">
      <h4 class=" text-center poppins font-weight-bold  text-orange"> Out-Cameras </h4>
-     <div  class="card bg-dark p-5 m-2">
-              <img src="{{ {%url 'videofeed' cam='201' %} }}" class="img-fluid">
-     </div>
-     <div  class="card bg-dark p-5 m-2">
-       camera2
-     </div>
+     <div  class="card m-2">
+      <img style="height: 100%;width: 100%;" src="/videofeed/201" class="img-fluid rounded">
+    </div>
+
    </div>
 
   </div>
@@ -110,6 +106,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="/static/js/demoscripts.js"></script>
 <script>
 
 </script>

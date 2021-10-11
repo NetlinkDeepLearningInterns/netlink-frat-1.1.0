@@ -44,41 +44,56 @@ mpl.use('Agg')
 
 #utility functions:
 
-# class VideoCamera(object):
-#     def __init__(self,cam):
-#     	src='rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/'+cam+'/'
-#         self.video = cv2.VideoCapture(src)
-#         (self.grabbed, self.frame) = self.video.read()
-#         threading.Thread(target=self.update, args=()).start()
+class VideoCamera(object):
+	def __init__(self,cam):
+		cam="rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/"+cam+"/"
+		print(cam)
+		# src='rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/'+cam+'/'
+		self.video = cv2.VideoCapture(cam)
+		(self.grabbed, self.frame) = self.video.read()
+		threading.Thread(target=self.update, args=()).start()
+	def __del__(self):
+		self.video.release()
+	def get_frame(self):
+		image=self.frame
+		_,jpeg=cv2.imencode('.jpg',image)
+		return jpeg.tobytes()
+	# def get_frame(self):
+    #     image = self.frame
+    #     _, jpeg = cv2.imencode('.jpg', image)
+    #     return jpeg.tobytes()
 
-#     def __del__(self):
-#         self.video.release()
-
-#     def get_frame(self):
-#         image = self.frame
-#         _, jpeg = cv2.imencode('.jpg', image)
-#         return jpeg.tobytes()
-
-#     def update(self):
-#         while True:
-#             (self.grabbed, self.frame) = self.video.read()
-
-
-# def gen(camera):
-#     while True:
-#         frame = camera.get_frame()
-#         yield(b'--frame\r\n'
-#               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+	def update(self):
+		while True:
+			(self.grabbed, self.frame) = self.video.read()
 
 
-# @gzip.gzip_page
-# def livefeed(request):
-#     cam=request.GET.get('cam','')
-#     try:
-#         cam = VideoCamera(cam)
-#         return StreamingHttpResponse(gen(cam), content_type="multipart/x-mixed-replace;boundary=frame")
-#     except:  
-#         pass
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        yield(b'--frame\r\n'
+              b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+@gzip.gzip_page
+def livefeed(request,cam):
+	try:
+		camx = VideoCamera(cam)
+		return StreamingHttpResponse(gen(camx), content_type="multipart/x-mixed-replace;boundary=frame")
+	except Exception:
+		pass
+
+def create_userlog():
+	global userlog
+	userlog={}
+	us=User.objects.all()
+	for u in us:
+		if u.username!='admin':
+			try:
+				qs=Time.objects.filter(user=u).latest('time')		
+				userlog[u.username]=not qs.out
+			except Exception:
+				userlog[u.username]=False
+	print(userlog)
 
 def create_connection(db_file):
     conn = None
@@ -513,7 +528,7 @@ def last_week_emp_count_vs_date():
 	plt.close()
 
 def mark_your_attendance(request):
-	
+	global userlog
 	detector = dlib.get_frontal_face_detector()	
 	predictor = dlib.shape_predictor('face_recognition_data/shape_predictor_68_face_landmarks.dat')   #Add path to the shape predictor ######CHANGE TO RELATIVE PATH LATER
 	svc_save_path="face_recognition_data/svc.sav"	
@@ -632,7 +647,6 @@ def mark_your_attendance_out(request):
 			cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),1)
 			(pred,prob)=predict(face_aligned,svc)
 			if(pred!=[-1]):
-				
 				person_name=encoder.inverse_transform(np.ravel([pred]))[0]
 				pred=person_name
 				if count[pred] == 0:
@@ -646,7 +660,7 @@ def mark_your_attendance_out(request):
 					present[pred] = True
 					log_time[pred] = datetime.datetime.now()
 					count[pred] = count.get(pred,0) + 1
-					# print(pred, present[pred], count[pred])
+					print(pred, present[pred], count[pred])
 				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
 				try:
 					update_attendance_in_db_out(present)
@@ -743,7 +757,8 @@ def registeremp(request):
 def control(request):
 	if(request.user.username=='admin'):
 		print("admin")
-		return render(request, 'recognition/control_panel.html')
+		emp_present_today=employees_present_today()
+		return render(request, 'recognition/control_panel.html',{'emp_present_today': emp_present_today})
 	print("not admin")
 	return redirect('/')
 
@@ -922,3 +937,5 @@ def view_attendance_employee(request):
 	
 	form=UsernameAndDateForm()
 	return render(request,'recognition/view_attendance_employee.html', {'form' : form, 'qs' :qs})
+
+create_userlog()

@@ -51,26 +51,6 @@
     
     </nav>
 
-  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <span class="navbar-brand" style="border-radius: 0% !important;" href="#"><img style="border-radius: 0% !important;" src="../static/recognition/img/logo.png" height="40"></span>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <ul class="navbar-nav navbar-right">
-      <li class="nav-item ">
-        <a style="font-size: 20px;" href="{%url 'view-attendance-employee' %}" class="nav-link font-weight-bold float-right px-3">By Employee</a>
-      </li>
-      <li class="nav-item ">
-        <a style="font-size: 20px;" href="{% url 'view-attendance-date' %}" class="nav-link font-weight-bold float-right px-3">By Date</a>
-      </li>
-      <li class="nav-item ">
-        <a style="font-size: 20px;" href="{% url 'dashboard' %}" class="nav-link font-weight-bold float-right px-3">Dashboard</a>
-      </li>
-      </ul>
-    </div>
-  </nav> -->
-
   <div class="container-fluid ">
     <div class="row row-content py-4 shadow justify-content-center">
     <div class="col-12 text-center mb-4">
@@ -180,20 +160,7 @@
      <div class="col-12 col-md-4 text-center">
        <h4 class="poppins font-weight-bold  text-orange">Attendance Graph</h4>
         <div class="row" >
-            <div class="col-6 col-md-12">
-            <h2> Last Week </h2>
-                <div class="card">
-              <img class="card-img-top" src="{% static 'recognition/img/attendance_graphs/last_week/1.png'%}" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text" style="text-align: center;">Number of employees present each day</p>
-              </div>
-            </div>
             
-            
-            
-            
-            
-            </div>
             <div class="col-6 col-md-12">
               <h2> This Week </h2>
              <div class="card" >
@@ -203,8 +170,16 @@
               </div>
             </div>
             
-            
             </div>
+            <div class="col-6 col-md-12">
+              <h2> Last Week </h2>
+                  <div class="card">
+                <img class="card-img-top" src="{% static 'recognition/img/attendance_graphs/last_week/1.png'%}" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text" style="text-align: center;">Number of employees present each day</p>
+                </div>
+              </div>
+              </div>
             </div>
        
      </div>
