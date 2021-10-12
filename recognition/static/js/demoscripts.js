@@ -35,14 +35,18 @@ $('#filterbyemp-btn').click(function(){
      alert(sql);
   });
 
-
   //clock
   let clock = () => {
   let date = new Date();
+  let d=date.getDate();
+  let m=date.getMonth();
+  let y=date.getFullYear();
+  let fd=d+'/'+m+'/'+y+' '
   let hrs = date.getHours();
   let mins = date.getMinutes();
   let secs = date.getSeconds();
   let period = "AM";
+  
   if (hrs == 0) {
     hrs = 12;
   } else if (hrs >= 12) {
@@ -54,7 +58,7 @@ $('#filterbyemp-btn').click(function(){
   secs = secs < 10 ? "0" + secs : secs;
 
   let time = `${hrs}:${mins}:${secs}:${period}`;
-  document.getElementById("clock").innerText = time;
+  document.getElementById("clock").innerText =fd+time;
   setTimeout(clock, 1000);
 };
 

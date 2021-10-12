@@ -421,12 +421,7 @@ color:white;
     cursor: pointer;
   }
 
-  #clock {
-  color: #5da8d7;
-  font-size: 40px;
-
-}
-
+ 
 .pause,.pause:focus,.pause:active{
 
   border:0 !important;
