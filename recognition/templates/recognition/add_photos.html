@@ -4,25 +4,33 @@
 <!DOCTYPE html>
 <html>
 <head>
+ <!-- Required meta tags -->
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	  <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <!-- Bootstrap CSS -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"> 
+<link rel="stylesheet" type="text/css" href="/static/css/nstyles.css">
+<link rel="stylesheet" type="text/css" href="/static/icons/css/all.css">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-   <style>
-    body{
-      background:white no-repeat center center fixed;
-      background-size: cover;
-      
-    }
+<style>
+ body{
+   background: #fff no-repeat center center fixed;
+   background-size: cover;
    
-   </style>
+ }
+.text-muted{
+  color:#ccc !important;
+}
+.form-style{
+ background: #1884c6;margin-top:50px ; padding-top:1em;padding-bottom:3em;color:#fff;border-radius:10px;-webkit-box-shadow: 2px 2px 15px 0 rgba(0, 3, 0, 0.7);
+-moz-box-shadow:    2px 2px 15px 0 rgba(0, 3, 0, 0.7);
+box-shadow:         2px 2px 15px 0 rgba(0, 3, 0, 0.7); margin-left:auto; margin-right: auto;
+}
+</style>
 
 
-	
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -33,15 +41,13 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <ul class="navbar-nav">
         <li class="nav-item ">
-          <a style="font-size: 20px;" href="{% url 'registeremp' %}" class="nav-link font-weight-bold float-right px-3">Back/a>
+          <a style="font-size: 20px;" href="{% url 'registeremp' %}" class="nav-link font-weight-bold float-right px-3">Back</a>
         </li>
       </ul>
     </div>
   </nav>
 
- <div class="col-lg-4" style="background:#1884c6;margin-top:150px ; padding-top:1em;padding-bottom:3em;color:#fff;border-radius:10px;-webkit-box-shadow: 2px 2px 15px 0 rgba(0, 3, 0, 0.7);
--moz-box-shadow:    2px 2px 15px 0 rgba(0, 3, 0, 0.7);
-box-shadow:         2px 2px 15px 0 rgba(0, 3, 0, 0.7); margin-left:auto; margin-right: auto; ">
+ <div class="col-lg-4 form-style">
 
 
  <form method="POST" >

@@ -57,71 +57,71 @@ class VideoCamera(object):
 		image=self.frame
 		_,jpeg=cv2.imencode('.jpg',image)
 		return jpeg.tobytes()
-	def get_frame1(self):
-		image=self.frame
-		detector = dlib.get_frontal_face_detector()	
-	predictor = dlib.shape_predictor('face_recognition_data/shape_predictor_68_face_landmarks.dat')   #Add path to the shape predictor ######CHANGE TO RELATIVE PATH LATER
-	svc_save_path="face_recognition_data/svc.sav"	
+# 	def get_frame1(self):
+# 		image=self.frame
+# 		detector = dlib.get_frontal_face_detector()	
+# 	predictor = dlib.shape_predictor('face_recognition_data/shape_predictor_68_face_landmarks.dat')   #Add path to the shape predictor ######CHANGE TO RELATIVE PATH LATER
+# 	svc_save_path="face_recognition_data/svc.sav"	
 
-	with open(svc_save_path, 'rb') as f:
-			svc = pickle.load(f)
-	fa = FaceAligner(predictor , desiredFaceWidth = 96)
-	encoder=LabelEncoder()
-	encoder.classes_ = np.load('face_recognition_data/classes.npy')
-	faces_encodings = np.zeros((1,128))
-	no_of_faces = len(svc.predict_proba(faces_encodings)[0])
-	count = dict()
-	present = dict()
-	log_time = dict()
-	start = dict()
-	for i in range(no_of_faces):
-		count[encoder.inverse_transform([i])[0]] = 0
-		present[encoder.inverse_transform([i])[0]] = False
+# 	with open(svc_save_path, 'rb') as f:
+# 			svc = pickle.load(f)
+# 	fa = FaceAligner(predictor , desiredFaceWidth = 96)
+# 	encoder=LabelEncoder()
+# 	encoder.classes_ = np.load('face_recognition_data/classes.npy')
+# 	faces_encodings = np.zeros((1,128))
+# 	no_of_faces = len(svc.predict_proba(faces_encodings)[0])
+# 	count = dict()
+# 	present = dict()
+# 	log_time = dict()
+# 	start = dict()
+# 	for i in range(no_of_faces):
+# 		count[encoder.inverse_transform([i])[0]] = 0
+# 		present[encoder.inverse_transform([i])[0]] = False
 
-# 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
-	vs = VideoStream(src=0).start()
-	sampleNum = 0
+# # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
+# 	vs = VideoStream(src=0).start()
+# 	sampleNum = 0
 
-	while(True):
-		frame = vs.read()
-		frame = imutils.resize(frame ,width = 800)	
-		gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-		faces = detector(gray_frame,0)
-		for face in faces:
-			print("INFO : inside for loop")
-			(x,y,w,h) = face_utils.rect_to_bb(face)
-			face_aligned = fa.align(frame,gray_frame,face)
-			cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),1)
-			(pred,prob)=predict(face_aligned,svc)
-			if(pred!=[-1]):
-				print("face detected")
-				person_name=encoder.inverse_transform(np.ravel([pred]))[0]
-				pred=person_name
-				if count[pred] == 0:
-					start[pred] = time.time()
-					count[pred] = count.get(pred,0) + 1
-					try:
-						update_attendance_in_db_in(present)
-					except Exception as e:
-						print(e)
+# 	while(True):
+# 		frame = vs.read()
+# 		frame = imutils.resize(frame ,width = 800)	
+# 		gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+# 		faces = detector(gray_frame,0)
+# 		for face in faces:
+# 			print("INFO : inside for loop")
+# 			(x,y,w,h) = face_utils.rect_to_bb(face)
+# 			face_aligned = fa.align(frame,gray_frame,face)
+# 			cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),1)
+# 			(pred,prob)=predict(face_aligned,svc)
+# 			if(pred!=[-1]):
+# 				print("face detected")
+# 				person_name=encoder.inverse_transform(np.ravel([pred]))[0]
+# 				pred=person_name
+# 				if count[pred] == 0:
+# 					start[pred] = time.time()
+# 					count[pred] = count.get(pred,0) + 1
+# 					try:
+# 						update_attendance_in_db_in(present)
+# 					except Exception as e:
+# 						print(e)
 
-				if count[pred] == 10 and (time.time()-start[pred]) > 1.2:
-					count[pred] = 0
-					try:
-						update_attendance_in_db_in(present)
-					except Exception as e:
-						print(e)
-				else:
-				#if count[pred] == 4 and (time.time()-start) <= 1.5:
-					present[pred] = True
-					log_time[pred] = datetime.datetime.now()
-					count[pred] = count.get(pred,0) + 1
-					print(pred, present[pred], count[pred])
-				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
+# 				if count[pred] == 10 and (time.time()-start[pred]) > 1.2:
+# 					count[pred] = 0
+# 					try:
+# 						update_attendance_in_db_in(present)
+# 					except Exception as e:
+# 						print(e)
+# 				else:
+# 				#if count[pred] == 4 and (time.time()-start) <= 1.5:
+# 					present[pred] = True
+# 					log_time[pred] = datetime.datetime.now()
+# 					count[pred] = count.get(pred,0) + 1
+# 					print(pred, present[pred], count[pred])
+# 				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
 
-			else:
-				person_name="unknown"
-				cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
+# 			else:
+# 				person_name="unknown"
+# 				cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
 
 	def update(self):
 		while True:
