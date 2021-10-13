@@ -714,6 +714,7 @@ def test_mark_your_attendance(request):
 					start[pred] = time.time()
 					count[pred] = count.get(pred,0) + 1
 					try:
+						present[pred] = True
 						update_attendance_in_db_in(present)
 					except Exception as e:
 						print(e)
@@ -887,6 +888,7 @@ def test_mark_your_attendance_out(request):
 					start[pred] = time.time()
 					count[pred] = count.get(pred,0) + 1
 					try:
+						present[pred] = True
 						update_attendance_in_db_out(present)
 					except Exception as e:
 						print(e)

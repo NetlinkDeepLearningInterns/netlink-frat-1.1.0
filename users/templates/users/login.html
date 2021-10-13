@@ -13,14 +13,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"> 
     <link rel="stylesheet" type="text/css" href="/static/css/nstyles.css">
-<style>
-  .form-style{
-  border: 1px solid black !important;
-  background:#1884c6!important;
-  margin-top:100px  !important; padding-top:1em !important;padding-bottom:3em !important;color:#fff;border-radius:10px;
-  margin-left:auto !important; margin-right: auto !important;
-}
-</style>
+    
+   <link rel="stylesheet" type="text/css" href="/static/icons/css/all.css">
+    <style>
+      body{
+        background: #fff no-repeat center center fixed;
+        background-size: cover;
+        
+      }
+      .bg-blue{
+    background-color: #1884c6 !important;
+  }
+     </style>
+  
   </head>
 <body>
 
@@ -39,23 +44,36 @@
     </div>
 
 </nav>
+<div class="container">
+  <div class="row justify-content-center my-2">
+    <div class="col-lg-6 m-4" >
+      <div style="background-color: #f9f9f9;" class="shadow card  " >
+        <div class="card-header bg-blue"><h2 class="raleway text-white">Login  <i class="fa fa-sign-in"></i></h2></div>
+        <div class="card-body">
+         <form style="position: relative;" method="POST" class="hh-form">
+              {% csrf_token %}
+              {%for field in form%}
+              <div  style="position: relative;" class="form-group mb-4 hh-row ">
+                <label class="input-label">{{field.label}} <sup>*</sup></label>
+                
+                <input placeholder="" required="" type="{{field.html_name}}" name="{{field.html_name}}" class="form-control validate effect-17"/>
+                <span class="focus-border"></span>
+              </div>
+              {%endfor%}
+        
+              <div class="form-group">
+                <button class="btn btn-dark w-100 rounded-pill" type="submit"> Login <i class="fa fa-arrow-circle-right"></i></button>
+              </div>
+            </form>
+          </div>
+        </div>
 
-
- <div class=" form-style col-lg-4 " >
-
-  <form method="POST" >
-      {% csrf_token %}
-      <fieldset class="form-group">
-        <legend class="border-bottom mb-4"> Log In </legend>
-        {{form| crispy}}
-      </fieldset>
-
-      <div class="form-group">
-        <button style="border-radius: 50px;" class="btn btn-light btn-pill w-100" type="submit"> Login <i class="fa fa-play"></i></button>
-      </div>
-    </form>
-
+    </div>
+  </div>
 </div>
+
+
+
   <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
    

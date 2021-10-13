@@ -21,14 +21,9 @@
       background-size: cover;
       
     }
-   .text-muted{
-     color:#ccc !important;
-   }
-   .form-style{
-    background: #1884c6;margin-top:50px ; padding-top:1em;padding-bottom:3em;color:#fff;border-radius:10px;-webkit-box-shadow: 2px 2px 15px 0 rgba(0, 3, 0, 0.7);
--moz-box-shadow:    2px 2px 15px 0 rgba(0, 3, 0, 0.7);
-box-shadow:         2px 2px 15px 0 rgba(0, 3, 0, 0.7); margin-left:auto; margin-right: auto;
-   }
+    .bg-blue{
+  background-color: #1884c6 !important;
+}
    </style>
 
 
@@ -48,7 +43,7 @@ box-shadow:         2px 2px 15px 0 rgba(0, 3, 0, 0.7); margin-left:auto; margin-
                 <a class="nav-link onhover-bb  raleway " href="{%url 'dashboard' %}">Overview</a>
             </li>
             <li class="nav-item ">
-                <a class="nav-link onhover-bb  raleway " href="#">Control</a>
+                <a class="nav-link onhover-bb  raleway " href="{%url 'control'%}">Control</a>
             </li>
             <li class="nav-item ">
                 <a class="nav-link onhover-bb  raleway "  href="{%url 'registeremp' %}">Register Employee</a>
@@ -66,22 +61,34 @@ box-shadow:         2px 2px 15px 0 rgba(0, 3, 0, 0.7); margin-left:auto; margin-
     </div>
 
 </nav>
+<div class="container">
+  <div class="row justify-content-center my-2">
+    <div class="col-lg-6 m-4" >
+      <div style="background-color: #f9f9f9;" class="shadow card  " >
+        <div class="card-header bg-blue"><h2 class="raleway text-white">Register <i class="fa fa-user-plus"></i></h2></div>
+        <div class="card-body">
+         <form style="position: relative;" method="POST" class="hh-form">
+              {% csrf_token %}
+              {%for field in form%}
+              <div  style="position: relative;" class="form-group mb-4 hh-row ">
+                <label class="input-label">{{field.label}} <sup>*</sup></label>
+                {{field}}
+                <!-- <input placeholder="" required="" type="text" name="" class="form-control validate effect-17"/> -->
+                <span class="focus-border"></span>
+              </div>
+              {%endfor%}
+        
+              <div class="form-group">
+                <button class="btn btn-dark w-100 rounded-pill" type="submit"> Register <i class="fa fa-arrow-circle-right"></i></button>
+              </div>
+            </form>
+          </div>
+        </div>
 
- <div class="col-lg-4 form-style" >
-
- <form method="POST" >
-      {% csrf_token %}
-      <fieldset style="color: white !important;" class="form-group">
-        <legend class="border-bottom mb-4"> Register New Employee </legend>
-        {{form| crispy}}
-      </fieldset>
-
-      <div class="form-group">
-        <button class="btn btn-light" type="submit"> Register</button>
-      </div>
-    </form>
-
+    </div>
+  </div>
 </div>
+
 
 
 
