@@ -960,6 +960,7 @@ def view_my_attendance_employee_login(request):
 	in_time=in_time.first()
 	out_time=out_time.last()
 	presenttoday=present_qs.filter(date=datetime.date.today())
+	
 	if request.method=='POST':
 		form=DateForm_2(request.POST)
 		if form.is_valid():
@@ -978,7 +979,7 @@ def view_my_attendance_employee_login(request):
 			messages.warning(request, f'No records for selected duration.')
 			return redirect('view-my-attendance-employee-login')
 	form=DateForm_2()
-	return render(request,'recognition/employee_dashboard.html', {'form' : form, 'intime' :in_time,'outtime':out_time,'presenttoday':present_qs})
+	return render(request,'recognition/employee_dashboard.html', {'form' : form, 'intime' :in_time,'outtime':out_time,'presenttoday':presenttoday})
 
 @login_required
 def dashboard(request):
