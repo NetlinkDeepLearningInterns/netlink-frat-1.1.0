@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +31,7 @@
                     <a class="nav-link onhover-bb  raleway " href="{%url 'dashboard' %}">Overview</a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link onhover-bb  raleway " href="{%url 'control' %}}">Control</a>
+                    <a class="nav-link onhover-bb  raleway " href="{%url 'add-camera' %}">Add Camera</a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link onhover-bb  raleway "  href="{%url 'registeremp' %}">Register Employee</a>
@@ -82,20 +81,36 @@
   <div class="row">
    <div style=" border-right: 1px solid #ddd;" class="col-12 col-sm-6">
      <h4 class=" text-center poppins font-weight-bold  text-orange"> In-Cameras </h4>
+     {% if in_cameras %}
+     {% for ic in in_cameras %}
      <div  class="card m-2">
-       <img src="/videofeed/101" class="img-fluid rounded">
-     </div>
+      <img src="/videofeed/?cam={{ic}}" class="img-fluid rounded">
+    </div>
+     {%endfor%}
+     {%endif%}
+  
 
    </div>
    <div class="col-12 col-sm-6">
      <h4 class=" text-center poppins font-weight-bold  text-orange"> Out-Cameras </h4>
+     {% if out_cameras %}
+     {% for oc in out_cameras %}
      <div  class="card m-2">
-      <img style="height: 100%;width: 100%;" src="/videofeed/201" class="img-fluid rounded">
+      <img src="/videofeed/?cam={{oc}}" class="img-fluid rounded">
     </div>
+     {%endfor%}
+     {%endif%}
 
    </div>
 
   </div>
+  {% if messages %}
+      {% for message in messages%}
+      <div class="alert alert-{{message.tags}}" > {{message}}
+      </div>
+      {%endfor %}
+
+    {%endif%}
  </div>
 </div>
 </div>

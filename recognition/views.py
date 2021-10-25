@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
-from .forms import usernameForm,DateForm,UsernameAndDateForm, DateForm_2
+from .forms import usernameForm,DateForm,UsernameAndDateForm, DateForm_2,CameraForm
 from django.contrib import messages
 from django.views.decorators import gzip
 from django.http import StreamingHttpResponse
 from django.contrib.auth.models import User
+from .models import Camera
 import cv2
 import dlib
 import imutils
@@ -46,7 +47,7 @@ mpl.use('Agg')
 
 class VideoCamera(object):
 	def __init__(self,cam):
-		cam="rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/"+cam+"/"
+		# cam="rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/"+cam+"/"
 
 		self.video = cv2.VideoCapture(cam)
 		(self.grabbed, self.frame) = self.video.read()
@@ -135,7 +136,10 @@ def gen(camera):
               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 @gzip.gzip_page
-def livefeed(request,cam):
+def livefeed(request):
+	cam=request.GET.get('cam')
+	camobject=Camera.objects.get(id=cam)
+	cam=camobject.getUrl()
 	try:
 		camx = VideoCamera(cam)
 		return StreamingHttpResponse(gen(camx), content_type="multipart/x-mixed-replace;boundary=frame")
@@ -670,7 +674,7 @@ def mark_your_attendance(request):
 	cv2.destroyAllWindows()
 	return render(request,'recognition/markin.html')
 
-def test_mark_your_attendance(request):
+def test_mark_your_attendance(request,cam):
 	global userlog
 	detector = dlib.get_frontal_face_detector()	
 	predictor = dlib.shape_predictor('face_recognition_data/shape_predictor_68_face_landmarks.dat')   #Add path to the shape predictor ######CHANGE TO RELATIVE PATH LATER
@@ -692,7 +696,9 @@ def test_mark_your_attendance(request):
 		present[encoder.inverse_transform([i])[0]] = False
 
 # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
-	vs = VideoStream(src=0).start()
+	camobject=Camera.objects.get(id=cam)
+	cam=camobject.getUrl()
+	vs = VideoStream(src=cam).start()
 	sampleNum = 0
 
 	while(True):
@@ -780,6 +786,7 @@ def mark_your_attendance_out(request):
 		present[encoder.inverse_transform([i])[0]] = False
 
 # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/201/'
+	
 	vs = VideoStream(src=0).start()
 	sampleNum = 0
 	
@@ -845,7 +852,7 @@ def mark_your_attendance_out(request):
 	# return redirect('home')
 	return render(request,'recognition/markout.html')
 
-def test_mark_your_attendance_out(request):
+def test_mark_your_attendance_out(request,cam):
 
 	detector = dlib.get_frontal_face_detector()
 	predictor = dlib.shape_predictor('face_recognition_data/shape_predictor_68_face_landmarks.dat')   #Add path to the shape predictor ######CHANGE TO RELATIVE PATH LATER
@@ -866,7 +873,9 @@ def test_mark_your_attendance_out(request):
 		present[encoder.inverse_transform([i])[0]] = False
 
 # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/201/'
-	vs = VideoStream(src=0).start()
+	camobject=Camera.objects.get(id=cam)
+	cam=camobject.getUrl()
+	vs = VideoStream(src=cam).start()
 	sampleNum = 0
 	
 	while(True):
@@ -1007,10 +1016,29 @@ def control(request):
 	if(request.user.username=='admin'):
 		print("admin")
 		emp_present_today=employees_present_today()
-		return render(request, 'recognition/control_panel.html',{'emp_present_today': emp_present_today})
+		in_cameras=Camera.objects.filter(cameratype="In")
+		out_cameras=Camera.objects.filter(cameratype="Out")
+		if in_cameras:
+			in_cameras=[ic.id for ic in in_cameras]
+		if out_cameras:
+			out_cameras=[oc.id for oc in out_cameras]
+		return render(request, 'recognition/control_panel.html',{'emp_present_today': emp_present_today,'in_cameras':in_cameras,'out_cameras':out_cameras})
 	print("not admin")
 	return redirect('/')
 
+@login_required
+def markin(request):
+	in_cameras=Camera.objects.filter(cameratype="In")
+	if in_cameras:
+		in_cameras=[ic.id for ic in in_cameras]
+	return render(request,"recognition/markin.html", {'in_cameras' : in_cameras})
+
+@login_required
+def markout(request):
+	out_cameras=Camera.objects.filter(cameratype="Out")
+	if out_cameras:
+		out_cameras=[oc.id for oc in out_cameras]
+	return render(request,"recognition/markout.html", {'out_cameras' : out_cameras})
 def viewemp(request):
 	records=None
 	if(request.user.username=='admin'):
@@ -1048,6 +1076,21 @@ def add_photos(request):
 
 	form=usernameForm()
 	return render(request,'recognition/add_photos.html', {'form' : form})
+
+
+@login_required
+def add_camera(request):
+	if request.user.username!='admin':
+		return redirect('not-authorised')
+	if request.method=='POST':
+		form=CameraForm(request.POST)
+		if form.is_valid():
+			form.save() ###add camera to database
+			messages.success(request, f'Camera Added successfully!')
+			return redirect('control')
+	else:
+		form=CameraForm()
+	return render(request,'recognition/add_camera.html', {'form' : form})
 
 @login_required
 def train(request):
