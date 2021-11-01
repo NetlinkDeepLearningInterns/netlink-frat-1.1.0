@@ -40,7 +40,7 @@ import math
 import sqlite3
 from sqlite3 import Error
 import threading
-
+import shutil
 mpl.use('Agg')
 
 #utility functions:
@@ -292,6 +292,7 @@ def vizualize_Data(embedded, targets,):
 def update_attendance_in_db_in(present):
 	today=datetime.date.today()
 	time=datetime.datetime.now()
+
 	for person in present:
 		user=User.objects.get(username=person)
 		try:
@@ -320,6 +321,7 @@ def update_attendance_in_db_out(present):
 	
 	for person in present:
 		user=User.objects.get(username=person)
+		print("sas",user)
 		qs=Time.objects.filter(date=today).filter(user=user).filter(out=False)
 		if present[person]==True and len(qs)>0:
 			a=Time(user=user,date=today,time=time, out=True)
@@ -750,7 +752,7 @@ def test_mark_your_attendance(request,cam):
 
 		#Showing the image in another window
 		#Creates a window with window name "Face" and with the image img
-		cv2.imshow("Mark Attendance - In - Press q to exit",frame)
+		cv2.imshow(cam,frame)
 		#Before closing it we need to give a wait command, otherwise the open cv wont work
 		# @params with the millisecond of delay 1
 		#cv2.waitKey(1)
@@ -883,7 +885,6 @@ def test_mark_your_attendance_out(request,cam):
 		frame = imutils.resize(frame ,width = 800)
 		gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 		faces = detector(gray_frame,0)
-
 		for face in faces:
 			# print("INFO : inside for loop")
 			(x,y,w,h) = face_utils.rect_to_bb(face)
@@ -928,7 +929,7 @@ def test_mark_your_attendance_out(request,cam):
 
 		#Showing the image in another window
 		#Creates a window with window name "Face" and with the image img
-		cv2.imshow("Mark Attendance- Out - Press q to exit",frame)
+		cv2.imshow(cam,frame)
 		#Before closing it we need to give a wait command, otherwise the open cv wont work
 		# @params with the millisecond of delay 1
 		#cv2.waitKey(1)
@@ -1039,25 +1040,35 @@ def markout(request):
 	if out_cameras:
 		out_cameras=[oc.id for oc in out_cameras]
 	return render(request,"recognition/markout.html", {'out_cameras' : out_cameras})
+@login_required
 def viewemp(request):
 	records=None
 	if(request.user.username=='admin'):
 		print("admin")
-		try:
-			conn=create_connection("db.sqlite3")
-			cursor = conn.cursor()
-			sql="""SELECT id,username,date_joined from auth_user"""
-			cursor.execute(sql)
-			records = cursor.fetchall()
-			print("rec",records)
-		except Exception as e:
-			print(e)
-		# print(qs)
-		return render(request, 'recognition/view_employee.html',{'qs' : records})
+		rec=User.objects.all()
+		return render(request, 'recognition/view_employee.html',{'qs' : rec})
 
 	print("not admin")
 	return render(request,'/')
+@login_required
+def delete_employee(request,user):
+	if(request.user.username=='admin'):
+		print("admin")
+		rec=None
+		folder="face_recognition_data/training_dataset/"
+		try:
+			rec=User.objects.get(username=user)
+			rec.delete()
+			if user in os.listdir(folder):
+				shutil.rmtree(folder+user)
 
+		except Exception as e:
+			print(e)
+			print("Employee Not found")
+		return render(request, 'recognition/view_employee.html')
+
+	print("not admin")
+	return render(request,'/')
 @login_required
 def add_photos(request):
 	if request.user.username!='admin':

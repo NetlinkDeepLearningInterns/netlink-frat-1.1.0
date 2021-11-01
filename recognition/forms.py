@@ -38,3 +38,4 @@ class CameraForm(forms.Form):
 		camera.cameratype=self.cleaned_data['cameratype']	
 		camera.save()
 		return camera
+

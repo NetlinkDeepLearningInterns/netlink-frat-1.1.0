@@ -61,23 +61,28 @@
   <legend class="border-bottom mb-4">   <h4 class="poppins font-weight-bold  text-orange mb-4 text-center">Employee Details</h4> </legend>
   
 {% if qs %}
-<table  class="table table-hover table-striped table-bordered" >
+<table  class="table table-striped table-bordered" >
    <thead >
    <tr>
-       <th scope="col">id</th>
-       <th scope="col" >UserName</th>
-       <th scope="col">Joined At</th>
+       <th scope="col">Id</th>
+       <th scope="col" >Employee Name</th>
+       <th scope="col">Email</th>
+       <th scope="col">Operation</th>
 
    </tr>
 </thead>
 <tbody>
    {% for item in qs %}
+   {%if item.is_staff%}
+   {%else%}
    <tr> 
-          <td>{{ item.0 }}</td>
-       <td>{{ item.1}}</td>
-         <td> {{item.2}} </td>
-   
-   </tr>
+    <td>{{ item.username }}</td>
+ <td>{{ item.get_full_name}}</td>
+   <td> {{item.email}} </td>
+   <td> <a class=" text-dark mr-2" href="/admin/auth/user/{{item.id}}/change/"> <i class="fa fa-lg fa-edit "></i></a>  <a class="text-danger ml-2" href="./delete_employee/{{item.username}}"> <i class="fa fa-lg fa-trash-alt "></i> </a> </td>
+
+</tr>
+   {%endif%}
    {% endfor %}
 </tbody>
 </table>

@@ -1,7 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head></head>
     <body>
         Success
+        {%if out_cameras%}
+        <form id="cam-form">
+          {% for oc in out_cameras %}
+          <input type="hidden" value="{{oc}}" name="{{oc}}">
+          {%endfor%}
+        </form>
+        {%endif%}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(
+        function(){
+        var cams=document.getElementsByTagName("input")
+        arr=new Array();
+        var x=""
+        for(var i=0;i<cams.length;i++){
+          $.ajax({
+                url:"/mark_your_attendance_out/"+cams[i].value,
+              });
+        }
+        }); 
+    </script>
     </body>
+    
 </html>

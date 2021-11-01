@@ -1,0 +1,103 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"> 
+   <link rel="stylesheet" type="text/css" href="/static/css/nstyles.css">
+   <link rel="stylesheet" type="text/css" href="/static/icons/css/all.css">
+
+   <style>
+    body{
+      background: #fff no-repeat center center fixed;
+      background-size: cover;
+      
+    }
+    .bg-blue{
+  background-color: #1884c6 !important;
+}
+   </style>
+
+
+	
+</head>
+<body>
+  <nav class="navbar navbar-light navbar-expand-md  shadow">
+    <div class="container-fluid ">
+  
+                                <a class="navbar-brand logo" href="/"><img  src='/static/recognition/img/logo.png' height="40"  alt='logo' /> <span class="d-none d-md-inline-block poppins font-weight-bold" style="color: #1884c6;" >FRAT</span> </a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#Navbar">
+<span class="navbar-toggler-icon"></span>
+</button>
+        <div id="Navbar" class="collapse navbar-collapse justify-content-between text-center">
+            <ul class="navbar-nav ml-auto">
+            <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway " href="{%url 'dashboard' %}">Overview</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway " href="{%url 'control'%}">Control</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway "  href="{%url 'registeremp' %}">Register Employee</a>
+            </li>
+             <li class="nav-item ">
+                <a class="nav-link onhover-bb  raleway "  href="{%url 'viewemp' %}">View Employee</a>
+            </li>
+                            <ul class="navbar-nav navbar-right">  
+     <li class="nav-item active"><a  class="nav-link onhover-bb raleway" id="loginTrigger" href="{% url 'logout' %}">Logout <i class="fa fa-sign-out"></i></a></li>
+   </ul>
+
+
+        </div>
+    
+    </div>
+
+</nav>
+<div class="container">
+  <div class="row justify-content-center my-2">
+    <div class="col-lg-6 m-4" >
+      <div style="background-color: #f9f9f9;" class="shadow card  " >
+        <div class="card-header bg-blue"><h2 class="raleway text-white">Edit Details <i class="fa fa-edit"></i></h2></div>
+        <div class="card-body">
+         <form style="position: relative;" method="POST" class="hh-form">
+              {% csrf_token %}
+              {%for field in form%}
+              <div  style="position: relative;" class="form-group mb-4 hh-row ">
+                <label class="input-label">{{field.label}} <sup>*</sup></label>
+                {{field}}
+                <!-- <input placeholder="" required="" type="text" name="" class="form-control validate effect-17"/> -->
+                <span class="focus-border"></span>
+              </div>
+              {%endfor%}
+        
+              <div class="form-group">
+                <button class="btn btn-dark w-100 rounded-pill" type="submit"> Register <i class="fa fa-arrow-circle-right"></i></button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+  <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+  </html>
