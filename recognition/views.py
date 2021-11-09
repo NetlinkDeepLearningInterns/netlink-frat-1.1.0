@@ -1041,6 +1041,15 @@ def markout(request):
 		out_cameras=[oc.id for oc in out_cameras]
 	return render(request,"recognition/markout.html", {'out_cameras' : out_cameras})
 @login_required
+def start_cameras(request):
+	in_cameras=Camera.objects.filter(cameratype="In")
+	if in_cameras:
+		in_cameras=[ic.id for ic in in_cameras]
+	out_cameras=Camera.objects.filter(cameratype="Out")
+	if out_cameras:
+		out_cameras=[oc.id for oc in out_cameras]
+	return render(request,"recognition/start.html", {'in_cameras' : in_cameras,'out_cameras' : out_cameras})
+@login_required
 def viewemp(request):
 	records=None
 	if(request.user.username=='admin'):
@@ -1241,7 +1250,3 @@ def view_attendance_employee(request):
 	form=UsernameAndDateForm()
 	return render(request,'recognition/view_attendance_employee.html', {'form' : form, 'qs' :qs})
 
-
-def test_close(request):
-	
-	return render(request,'recognition/markin.html')

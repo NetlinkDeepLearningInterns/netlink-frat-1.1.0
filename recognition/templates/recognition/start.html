@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        Started
+        {%if in_cameras%}
+        <form id="in-cam">
+          {% for ic in in_cameras %}
+          <input type="hidden" value="{{ic}}" name="{{ic}}">
+          {%endfor%}
+        </form>
+        {%endif%}
+
+        {%if out_cameras%}
+        <form id="out-cam">
+          {% for oc in out_cameras %}
+          <input type="hidden" value="{{oc}}" name="{{oc}}">
+          {%endfor%}
+        </form>
+        {%endif%}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(
+        function(){
+        // var cams=document.getElementsByTagName("input");
+        var in_cams=document.forms[0].elements;
+        var out_cams=document.forms[1].elements;
+        for(var i=0;i<in_cams.length;i++){
+          $.ajax({
+                url:"/mark_your_attendance/"+in_cams[i].value,
+              });
+        }
+        for(var i=0;i<out_cams.length;i++){
+          $.ajax({
+                url:"/mark_your_attendance_out/"+out_cams[i].value,
+              });
+        }
+        }); 
+    </script>
+    </body>
+    
+</html>

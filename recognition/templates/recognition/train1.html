@@ -30,8 +30,28 @@ $(document).ready(function(){
     alert("Training begun. This may take upto 5 minutes. Please wait.");
   });
 });
+
 </script>
-	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+       $(document).ready(
+        function(){
+           $.ajax({
+                 type:'GET',
+                 dataType:'text',   
+                    url:"/train",
+                    success:function(data){
+                        if(data==="success"){
+                            $('.train-load').addClass('d-none');
+                            $('.train-done').removeClass('d-none');
+                            // $('#model-img').attr('src','/static/recognition/img/training_visualisation.png')
+                        }
+                    }
+                          });
+
+        });
+        </script>	
 </head>
 <body>
   <nav class="navbar navbar-light navbar-expand-md  shadow">
@@ -78,7 +98,7 @@ $(document).ready(function(){
 </div>
 </div>
 <div class="col-12 text-center train-done d-none">
-    <img class="img-fluid" src="{% static 'recognition/img/training_visualisation.png' %}" />    
+    <img id="model-img" class="img-fluid" src="/static/recognition/img/training_visualisation.png" alt="model Visualization" />    
 </div>
 </div>
 </div>
@@ -86,24 +106,6 @@ $(document).ready(function(){
 
 <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-       $(document).ready(
-        function(){
-           $.ajax({
-                 type:'GET',
-                 dataType:'text',   
-                    url:"/train",
-                    success:function(data){
-                        if(data==="success"){
-                            $('.train-load').addClass('d-none');
-                            $('.train-done').removeClass('d-none');
-                        }
-                    }
-                          });
-
-        });
-        </script>
+    
 </body>
 </html>
