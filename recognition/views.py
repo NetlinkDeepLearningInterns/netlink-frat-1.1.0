@@ -985,7 +985,7 @@ def view_my_attendance_employee_login(request):
 			present_qs=present_qs.filter(date__gte=date_from).filter(date__lte=date_to).order_by('-date')
 			if (len(time_qs)>0 or len(present_qs)>0):
 				qs=hours_vs_date_given_employee(present_qs,time_qs,admin=False)
-				return render(request,'recognition/employee_dashboard.html', {'form' : form, 'qs' :qs,'intime' :in_time,'outtime':out_time,'present':present_qs})
+				return render(request,'recognition/employee_dashboard.html', {'form' : form, 'qs' :qs,'intime' :in_time,'outtime':out_time,'presenttoday':presenttoday})
 			messages.warning(request, f'No records for selected duration.')
 			return redirect('view-my-attendance-employee-login')
 	form=DateForm_2()
