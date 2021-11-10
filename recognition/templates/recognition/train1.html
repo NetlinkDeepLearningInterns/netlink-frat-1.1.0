@@ -42,11 +42,9 @@ $(document).ready(function(){
                  dataType:'text',   
                     url:"/train",
                     success:function(data){
-                        if(data==="success"){
                             $('.train-load').addClass('d-none');
+                            $('#model-img').attr('src',data)
                             $('.train-done').removeClass('d-none');
-                            // $('#model-img').attr('src','/static/recognition/img/training_visualisation.png')
-                        }
                     }
                           });
 
@@ -98,7 +96,7 @@ $(document).ready(function(){
 </div>
 </div>
 <div class="col-12 text-center train-done d-none">
-    <img id="model-img" class="img-fluid" src="/static/recognition/img/training_visualisation.png" alt="model Visualization" />    
+    <img id="model-img" class="img-fluid" src="" alt="model Visualization" />    
 </div>
 </div>
 </div>
