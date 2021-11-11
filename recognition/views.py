@@ -991,7 +991,26 @@ def viewemp(request):
 	if(request.user.username=='admin'):
 		print("admin")
 		rec=User.objects.all()
-		return render(request, 'recognition/view_employee.html',{'qs' : rec})
+		data=[]
+		for u in rec:
+			udata={'user':u,'in':None,'out':None}
+			today=datetime.date.today()
+			in_time=None
+			out_time=None
+			time_qs=Time.objects.filter(user=u)
+			in_time=time_qs.filter(date=today).filter(out=False).order_by('time')
+			out_time=time_qs.filter(date=today).filter(out=True).order_by('time')
+			in_time=in_time.last()
+			out_time=out_time.last()
+			if in_time and out_time:
+				print(in_time.time<out_time.time)
+			if in_time:
+				udata['in']=in_time.time
+			if out_time:
+				udata['out']=out_time.time
+			data.append(udata)
+			# print(udata)
+		return render(request, 'recognition/view_employee.html',{'qs' : rec,'udata':data})
 
 	print("not admin")
 	return render(request,'/')
@@ -1096,7 +1115,6 @@ def train(request):
 		pickle.dump(svc,f)
 	src=vizualize_Data(X1,targets)
 	
-	messages.success(request, f'Training Complete.')
 	return HttpResponse(src)
 	# return render(request,"recognition/train.html")
 
