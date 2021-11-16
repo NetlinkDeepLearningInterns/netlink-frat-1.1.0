@@ -185,7 +185,7 @@ def create_dataset(username):
 		# @params with the millisecond of delay 1
 		cv2.waitKey(1)
 		#To get out of the loop
-		if(sampleNum>200):
+		if(sampleNum>300):
 			break
 	
 	#Stoping the videostream
@@ -1001,15 +1001,13 @@ def viewemp(request):
 			in_time=time_qs.filter(date=today).filter(out=False).order_by('time')
 			out_time=time_qs.filter(date=today).filter(out=True).order_by('time')
 			in_time=in_time.last()
+			
 			out_time=out_time.last()
-			if in_time and out_time:
-				print(in_time.time<out_time.time)
 			if in_time:
 				udata['in']=in_time.time
 			if out_time:
 				udata['out']=out_time.time
 			data.append(udata)
-			# print(udata)
 		return render(request, 'recognition/view_employee.html',{'qs' : rec,'udata':data})
 
 	print("not admin")

@@ -92,11 +92,16 @@
           <div class="p-2 flex-fill bd-highlight ">
             {% if u.in %}
             <span class="text-success px-2"><i class="fa fa-lg fa-calendar-check "></i></span>
-              {% if u.out < u.in and u.out %}
+              {% if u.out %}
+              {% if u.out < u.in %}
               <span class="text-success px-2"><i class="fa fa-lg fa-check-circle "></i></span>
               {%else%}
               <span class="text-danger px-2"><i class="fa fa-lg fa-times-circle "></i></span>
               {%endif%}
+                  {%else%}
+                  <span class="text-success px-2"><i class="fa fa-lg fa-check-circle "></i></span>    
+              {%endif%}
+        
               {%else%}
               <span class="text-danger px-2"><i class="fa fa-lg fa-calendar-times "></i></span>
             {%endif%}
