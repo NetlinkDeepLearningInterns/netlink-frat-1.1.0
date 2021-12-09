@@ -15,6 +15,7 @@ from imutils.face_utils import FaceAligner
 import time
 from attendance_system_facial_recognition.settings import BASE_DIR
 import os
+import json
 import face_recognition
 from face_recognition.face_recognition_cli import image_files_in_folder
 import pickle
@@ -635,9 +636,9 @@ def test_mark_your_attendance(request,cam):
 
 # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
 	camobject=Camera.objects.get(id=cam)
-	cam=camobject.getUrl()
+	cam_src=camobject.getUrl()
 	# 'rtsp://admin:12345@103.46.196.100:554'
-	vs = VideoStream(src=cam).start()
+	vs = VideoStream(src=cam_src).start()
 	sampleNum = 0
 
 	while(True):
@@ -813,8 +814,8 @@ def test_mark_your_attendance_out(request,cam):
 
 # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/201/'
 	camobject=Camera.objects.get(id=cam)
-	cam=camobject.getUrl()
-	vs = VideoStream(src=cam).start()
+	cam_src=camobject.getUrl()
+	vs = VideoStream(src=cam_src).start()
 	sampleNum = 0
 	
 	while(True):
@@ -885,6 +886,27 @@ def test_mark_your_attendance_out(request,cam):
 	return render(request,'recognition/markout.html')
 
 # Create your views here.
+def attendance_check(request,area):
+	return render(request,'recognition/attendance_check.html')
+
+def update_attendance(request):
+	data_in={}
+	data_out={}
+	data=[]
+	today=datetime.date.today()
+	now = datetime.datetime.now()
+	current_time = now.strftime("%Y-%m-%d %H:%M:00")
+	time_qs=Time.objects.filter(date=today).filter(time__gte=current_time)
+	out_data=time_qs.filter(out=True)
+	in_data=time_qs.filter(out=False)
+	for t in in_data:
+		data_in[t.user.username]='<div class="col-6"><div class="card shadow-sm text-center"><h3 class=" text-center poppins  text-orange ">'+t.user.username+'</h3><h4 class=" text-center poppins "> '+t.user.get_full_name()+' </h4><p class="text-muted">'+str(t.time.strftime("%d-%m-%Y %H:%M:%S"))+'</p></div></div>'
+		# data_in+='<div class="col-6"><div class="card shadow-sm text-center"><h3 class=" text-center poppins  text-orange ">'+t.user.username+'</h3><h4 class=" text-center poppins "> '+t.user.get_full_name()+' </h4><p class="text-muted">'+str(t.time.strftime("%d-%m-%Y %H:%M:%S"))+'</p></div></div>'
+	data.append(data_in)
+	for t in out_data:
+		data_out[t.user.username]='<div class="col-6"><div class="card shadow-sm text-center"><h3 class=" text-center poppins  text-orange ">'+t.user.username+'</h3><h4 class=" text-center poppins "> '+t.user.get_full_name()+' </h4><p class="text-muted">'+str(t.time.strftime("%d-%m-%Y %H:%M:%S"))+'</p></div></div>'
+	data.append(data_out)
+	return HttpResponse(json.dumps(data))
 def home(request):
 	return redirect('login')
 	# return render(request, 'recognition/home.html')

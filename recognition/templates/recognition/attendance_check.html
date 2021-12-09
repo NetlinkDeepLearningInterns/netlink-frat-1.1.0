@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"> 
+   <link rel="stylesheet" type="text/css" href="/static/css/nstyles.css">
+   <link rel="stylesheet" type="text/css" href="/static/icons/css/all.css">
+
+<style>
+    html,body,.container-fluid,.row-content{
+        height: 100%;
+    }
+</style>
+	
+</head>
+ <body>
+
+<div class="container-fluid ">
+<div class="row  row-content m-1 p-1 pb-4 shadow justify-content-center ">
+    <div style=" border-right: 1px solid #ddd;" class="col-12 col-sm-6 ">
+        <h1 class=" text-center poppins font-weight-bold  text-orange"> Out </h1>
+        <hr class="w-75">
+        <div id="out-data" class="row justify-content-center">
+        
+    </div>
+      </div>
+      <div class="col-12 col-sm-6">
+        <h1 class=" text-center poppins font-weight-bold  text-orange"> In </h1>
+        <hr class="w-75">
+        <div id="in-data" class="row justify-content-center">
+        
+        </div>
+      </div>
+</div>
+</div>
+
+
+  <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+$(document).ready(function(){
+     setInterval("update_attendance()",5000);
+});
+
+function update_attendance() {
+    $.ajax({
+        url: '/update_attendance/',
+        type: 'GET',
+        datatype: 'text',
+        success: function(data) {
+            var parse_data = JSON.parse(data);
+            var in_data = parse_data[0];
+            if( in_data!= "" ) {
+                $("#in-data").empty();
+                for (const [key, value] of Object.entries(in_data)) {
+                    $("#in-data").append(value);
+                    }                
+            }
+            var out_data = parse_data[1];
+            if( out_data!= "" ) {
+                $("#out-data").empty();
+                for (const [key, value] of Object.entries(out_data)) {
+                    $("#out-data").append(value);
+                    }                
+             }
+        },
+        complete:function(data) {
+            //setTimeout(contact_poll,5000);
+        }
+    });
+}
+</script>
+ </body>
+ </html>
