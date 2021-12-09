@@ -193,7 +193,7 @@ def create_dataset(username):
 	# destroying all the windows
 	cv2.destroyAllWindows()
 
-def predict(face_aligned,svc,threshold=0.7):
+def predict(face_aligned,svc,threshold=0.85):
 	face_encodings=np.zeros((1,128))
 	try:
 		x_face_locations=face_recognition.face_locations(face_aligned)
@@ -636,6 +636,7 @@ def test_mark_your_attendance(request,cam):
 # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
 	camobject=Camera.objects.get(id=cam)
 	cam=camobject.getUrl()
+	# 'rtsp://admin:12345@103.46.196.100:554'
 	vs = VideoStream(src=cam).start()
 	sampleNum = 0
 
