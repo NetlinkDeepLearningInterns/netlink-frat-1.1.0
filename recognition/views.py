@@ -127,7 +127,9 @@ def create_dataset(username):
 	# Initialize the video stream
 	# print("[INFO] Initializing Video stream")
 	# 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
-	vs = VideoStream(src=0).start()
+	camobject=Camera.objects.get(cameratype="Training")
+	cam_src=camobject.getUrl()
+	vs = VideoStream(src=cam_src).start()
 	#time.sleep(2.0) ####CHECK######
 
 	# Our identifier
@@ -637,6 +639,7 @@ def test_mark_your_attendance(request,cam):
 # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
 	camobject=Camera.objects.get(id=cam)
 	cam_src=camobject.getUrl()
+	print(cam_src)
 	# 'rtsp://admin:12345@103.46.196.100:554'
 	vs = VideoStream(src=cam_src).start()
 	sampleNum = 0

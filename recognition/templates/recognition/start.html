@@ -3,22 +3,25 @@
 <html>
     <head></head>
     <body>
-        Started
-        {%if in_cameras%}
         <form id="in-cam">
+          {%if in_cameras%}
           {% for ic in in_cameras %}
           <input type="hidden" value="{{ic}}" name="{{ic}}">
           {%endfor%}
+          {%endif%}
         </form>
-        {%endif%}
 
-        {%if out_cameras%}
+
+
         <form id="out-cam">
+          {%if out_cameras%}
           {% for oc in out_cameras %}
           <input type="hidden" value="{{oc}}" name="{{oc}}">
           {%endfor%}
+        
+          {%endif%}
         </form>
-        {%endif%}
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
@@ -37,6 +40,8 @@
                 url:"/mark_your_attendance_out/"+out_cams[i].value,
               });
         }
+        alert("Cameras Started");
+        window.close();
         }); 
     </script>
     </body>

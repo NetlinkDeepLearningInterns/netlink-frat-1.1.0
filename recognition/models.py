@@ -9,7 +9,7 @@ class Camera(models.Model):
     cameratype=models.CharField(max_length=20)
     # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
     def getUrl(self):
-        url='rtsp://'+self.username+':'+self.password+'@'+self.ip+'/Streaming/Channels/'+self.channel+'/'
+        url='rtsp://'+self.username+':'+self.password+'@'+self.ip+'/'
         return url
 
 
