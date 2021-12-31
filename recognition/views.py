@@ -712,7 +712,7 @@ def test_mark_your_attendance_out(request,cam):
 		#Showing the image in another window
 		#Creates a window with window name "Face" and with the image img
 		
-		cv2.imshow(cam,frame)
+		# cv2.imshow(cam,frame)
 		
 		#Before closing it we need to give a wait command, otherwise the open cv wont work
 		# @params with the millisecond of delay 1
