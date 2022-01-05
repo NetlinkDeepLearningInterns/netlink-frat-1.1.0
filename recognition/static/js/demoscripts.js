@@ -39,13 +39,15 @@ $('#filterbyemp-btn').click(function(){
   let clock = () => {
   let date = new Date();
   let d=date.getDate();
-  let m=date.getMonth();
+  let m=date.getMonth() +1;
   let y=date.getFullYear();
   let fd=d+'/'+m+'/'+y+' '
   let hrs = date.getHours();
   let mins = date.getMinutes();
   let secs = date.getSeconds();
   let period = "AM";
+
+ 
   
   if (hrs == 0) {
     hrs = 12;
