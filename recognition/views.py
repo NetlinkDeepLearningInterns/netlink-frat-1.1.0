@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from .forms import usernameForm,DateForm,UsernameAndDateForm, DateForm_2,CameraForm
 from django.contrib import messages
 from django.views.decorators import gzip
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse,HttpResponse
 from django.contrib.auth.models import User
 from .models import Camera
 import cv2
@@ -194,7 +194,7 @@ def create_dataset(username):
 	# 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
 	camobject=Camera.objects.get(cameratype="Training")
 	cam_src=camobject.getUrl()
-	vs = VideoStream(src=cam_src).start()
+	vs = VideoStream(src=0).start()
 	#time.sleep(2.0) ####CHECK######
 
 	# Our identifier
@@ -618,7 +618,7 @@ def mark_your_attendance(request):
 		present[encoder.inverse_transform([i])[0]] = False
 
 # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
-	vs = VideoStream(src=0).start()
+	vs = VideoStream(cam).start()
 	sampleNum = 0
 
 	while(True):
@@ -704,10 +704,11 @@ def test_mark_your_attendance(request,cam):
 	camobject=Camera.objects.get(id=cam)
 	cam_src=camobject.getUrl()
 	print(cam_src)
+	
 	# 'rtsp://admin:12345@103.46.196.100:554'
-	vs = VideoStream(src=cam_src).start()
+	vs = VideoStream(0).start()
 	sampleNum = 0
-
+	
 	while(True):
 		frame = vs.read()
 		frame = imutils.resize(frame ,width = 800)	
@@ -723,6 +724,7 @@ def test_mark_your_attendance(request,cam):
 				print("face detected")
 				person_name=encoder.inverse_transform(np.ravel([pred]))[0]
 				pred=person_name
+				
 				if count[pred] == 0:
 					start[pred] = time.time()
 					count[pred] = count.get(pred,0) + 1
@@ -744,12 +746,14 @@ def test_mark_your_attendance(request,cam):
 					log_time[pred] = datetime.datetime.now()
 					count[pred] = count.get(pred,0) + 1
 					print(pred, present[pred], count[pred])
+
+		
 				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
 
 			else:
 				person_name="unknown"
 				cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
-				
+		print(present)	
 			#cv2.putText()
 			# Before continuing to the next loop, I want to give it a little pause
 			# waitKey of 100 millisecond
@@ -762,6 +766,7 @@ def test_mark_your_attendance(request,cam):
 		# @params with the millisecond of delay 1
 		#cv2.waitKey(1)
 		#To get out of the loop
+		
 		key=cv2.waitKey(50) & 0xFF
 		if(key==ord("q")):
 			break
@@ -794,7 +799,7 @@ def mark_your_attendance_out(request):
 
 # 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/201/'
 	
-	vs = VideoStream(src=0).start()
+	vs = VideoStream(cam).start()
 	sampleNum = 0
 	
 	while(True):
