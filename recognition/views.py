@@ -248,7 +248,9 @@ def create_dataset(username):
 
 		#Showing the image in another window
 		#Creates a window with window name "Face" and with the image img
-		cv2.imshow("Add Images",frame)
+		
+		# cv2.imshow("Add Images",frame)
+
 		#Before closing it we need to give a wait command, otherwise the open cv wont work
 		# @params with the millisecond of delay 1
 		cv2.waitKey(1)
@@ -596,88 +598,7 @@ def last_week_emp_count_vs_date():
 	plt.savefig('./recognition/static/recognition/img/attendance_graphs/last_week/1.png')
 	plt.close()
 
-def mark_your_attendance(request):
-	global userlog
-	detector = dlib.get_frontal_face_detector()	
-	predictor = dlib.shape_predictor('face_recognition_data/shape_predictor_68_face_landmarks.dat')   #Add path to the shape predictor ######CHANGE TO RELATIVE PATH LATER
-	svc_save_path="face_recognition_data/svc.sav"	
 
-	with open(svc_save_path, 'rb') as f:
-			svc = pickle.load(f)
-	fa = FaceAligner(predictor , desiredFaceWidth = 96)
-	encoder=LabelEncoder()
-	encoder.classes_ = np.load('face_recognition_data/classes.npy')
-	faces_encodings = np.zeros((1,128))
-	no_of_faces = len(svc.predict_proba(faces_encodings)[0])
-	count = dict()
-	present = dict()
-	log_time = dict()
-	start = dict()
-	for i in range(no_of_faces):
-		count[encoder.inverse_transform([i])[0]] = 0
-		present[encoder.inverse_transform([i])[0]] = False
-
-# 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/101/'
-	vs = VideoStream(cam).start()
-	sampleNum = 0
-
-	while(True):
-		frame = vs.read()
-		frame = imutils.resize(frame ,width = 800)	
-		gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-		faces = detector(gray_frame,0)
-		for face in faces:
-			print("INFO : inside for loop")
-			(x,y,w,h) = face_utils.rect_to_bb(face)
-			face_aligned = fa.align(frame,gray_frame,face)
-			cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),1)
-			(pred,prob)=predict(face_aligned,svc)
-			if(pred!=[-1]):
-				person_name=encoder.inverse_transform(np.ravel([pred]))[0]
-				pred=person_name
-				if count[pred] == 0:
-					start[pred] = time.time()
-					count[pred] = count.get(pred,0) + 1
-
-				if count[pred] == 4 and (time.time()-start[pred]) > 1.2:
-					 count[pred] = 0
-				else:
-				#if count[pred] == 4 and (time.time()-start) <= 1.5:
-					present[pred] = True
-					log_time[pred] = datetime.datetime.now()
-					count[pred] = count.get(pred,0) + 1
-					print(pred, present[pred], count[pred])
-				try:
-					update_attendance_in_db_in(present)
-				except Exception as e:
-					print(e)
-				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
-
-			else:
-				person_name="unknown"
-				cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
-				
-			#cv2.putText()
-			# Before continuing to the next loop, I want to give it a little pause
-			# waitKey of 100 millisecond
-			#cv2.waitKey(50)
-
-		#Showing the image in another window
-		#Creates a window with window name "Face" and with the image img
-		cv2.imshow("Mark Attendance - In - Press q to exit",frame)
-		#Before closing it we need to give a wait command, otherwise the open cv wont work
-		# @params with the millisecond of delay 1
-		#cv2.waitKey(1)
-		#To get out of the loop
-		key=cv2.waitKey(50) & 0xFF
-		if(key==ord("q")):
-			break
-	
-	#Stoping the videostream
-	vs.stop()
-	# destroying all the windows
-	cv2.destroyAllWindows()
-	return render(request,'recognition/markin.html')
 
 def test_mark_your_attendance(request,cam):
 	global userlog
@@ -714,6 +635,7 @@ def test_mark_your_attendance(request,cam):
 		frame = imutils.resize(frame ,width = 800)	
 		gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 		faces = detector(gray_frame,0)
+		temp=set()
 		for face in faces:
 			print("INFO : inside for loop")
 			(x,y,w,h) = face_utils.rect_to_bb(face)
@@ -730,6 +652,7 @@ def test_mark_your_attendance(request,cam):
 					count[pred] = count.get(pred,0) + 1
 					try:
 						present[pred] = True
+						temp.add(pred)
 						update_attendance_in_db_in(present)
 					except Exception as e:
 						print(e)
@@ -743,7 +666,7 @@ def test_mark_your_attendance(request,cam):
 				else:
 				#if count[pred] == 4 and (time.time()-start) <= 1.5:
 					present[pred] = True
-					log_time[pred] = datetime.datetime.now()
+					temp.add(pred)
 					count[pred] = count.get(pred,0) + 1
 					print(pred, present[pred], count[pred])
 
@@ -758,10 +681,13 @@ def test_mark_your_attendance(request,cam):
 			# Before continuing to the next loop, I want to give it a little pause
 			# waitKey of 100 millisecond
 			#cv2.waitKey(50)
-
+		for t in temp:
+			present[t]=False
 		#Showing the image in another window
 		#Creates a window with window name "Face" and with the image img
-		cv2.imshow(cam,frame)
+		
+		# cv2.imshow(cam,frame)
+
 		#Before closing it we need to give a wait command, otherwise the open cv wont work
 		# @params with the millisecond of delay 1
 		#cv2.waitKey(1)
@@ -777,92 +703,7 @@ def test_mark_your_attendance(request,cam):
 	cv2.destroyAllWindows()
 	return render(request,'recognition/markin.html')
 
-def mark_your_attendance_out(request):
 
-	detector = dlib.get_frontal_face_detector()
-	predictor = dlib.shape_predictor('face_recognition_data/shape_predictor_68_face_landmarks.dat')   #Add path to the shape predictor ######CHANGE TO RELATIVE PATH LATER
-	svc_save_path="face_recognition_data/svc.sav"			
-	with open(svc_save_path, 'rb') as f:
-			svc = pickle.load(f)
-	fa = FaceAligner(predictor , desiredFaceWidth = 96)
-	encoder=LabelEncoder()
-	encoder.classes_ = np.load('face_recognition_data/classes.npy')
-	faces_encodings = np.zeros((1,128))
-	no_of_faces = len(svc.predict_proba(faces_encodings)[0])
-	count = dict()
-	present = dict()
-	log_time = dict()
-	start = dict()
-	for i in range(no_of_faces):
-		count[encoder.inverse_transform([i])[0]] = 0
-		present[encoder.inverse_transform([i])[0]] = False
-
-# 'rtsp://mdpadmin:admin@10.95.9.27:554/Streaming/Channels/201/'
-	
-	vs = VideoStream(cam).start()
-	sampleNum = 0
-	
-	while(True):
-		frame = vs.read()
-		frame = imutils.resize(frame ,width = 800)
-		gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-		faces = detector(gray_frame,0)
-
-		for face in faces:
-			# print("INFO : inside for loop")
-			(x,y,w,h) = face_utils.rect_to_bb(face)
-			face_aligned = fa.align(frame,gray_frame,face)
-			cv2.rectangle(frame,(x,y),(x+w,y+h),(0,255,0),1)
-			(pred,prob)=predict(face_aligned,svc)
-			if(pred!=[-1]):
-				person_name=encoder.inverse_transform(np.ravel([pred]))[0]
-				pred=person_name
-				if count[pred] == 0:
-					start[pred] = time.time()
-					count[pred] = count.get(pred,0) + 1
-
-				if count[pred] == 4 and (time.time()-start[pred]) > 1.5:
-					 count[pred] = 0
-				else:
-				#if count[pred] == 4 and (time.time()-start) <= 1.5:
-					present[pred] = True
-					log_time[pred] = datetime.datetime.now()
-					count[pred] = count.get(pred,0) + 1
-					print(pred, present[pred], count[pred])
-				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
-				try:
-					update_attendance_in_db_out(present)
-				except Exception as e:
-					print(e)
-
-			else:
-				person_name="unknown"
-				cv2.putText(frame, str(person_name), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
-
-			#cv2.putText()
-			# Before continuing to the next loop, I want to give it a little pause
-			# waitKey of 100 millisecond
-			#cv2.waitKey(50)
-
-		#Showing the image in another window
-		#Creates a window with window name "Face" and with the image img
-		cv2.imshow("Mark Attendance- Out - Press q to exit",frame)
-		#Before closing it we need to give a wait command, otherwise the open cv wont work
-		# @params with the millisecond of delay 1
-		#cv2.waitKey(1)
-		#To get out of the loop
-		key=cv2.waitKey(50) & 0xFF
-		if(key==ord("q")):
-			break
-	
-	#Stoping the videostream
-	vs.stop()
-
-	# destroying all the windows
-	cv2.destroyAllWindows()
-	# update_attendance_in_db_out(present)
-	# return redirect('home')
-	return render(request,'recognition/markout.html')
 
 def test_mark_your_attendance_out(request,cam):
 
@@ -895,6 +736,7 @@ def test_mark_your_attendance_out(request,cam):
 		frame = imutils.resize(frame ,width = 800)
 		gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 		faces = detector(gray_frame,0)
+		temp=set()
 		for face in faces:
 			# print("INFO : inside for loop")
 			(x,y,w,h) = face_utils.rect_to_bb(face)
@@ -923,7 +765,7 @@ def test_mark_your_attendance_out(request,cam):
 				else:
 				#if count[pred] == 4 and (time.time()-start) <= 1.5:
 					present[pred] = True
-					log_time[pred] = datetime.datetime.now()
+					temp.add(pred)
 					count[pred] = count.get(pred,0) + 1
 					print(pred, present[pred], count[pred])
 				cv2.putText(frame, str(person_name)+ str(prob), (x+6,y+h-6), cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0),1)
@@ -936,10 +778,13 @@ def test_mark_your_attendance_out(request,cam):
 			# Before continuing to the next loop, I want to give it a little pause
 			# waitKey of 100 millisecond
 			#cv2.waitKey(50)
-
+		for t in temp:
+			present[t]=False
 		#Showing the image in another window
 		#Creates a window with window name "Face" and with the image img
-		cv2.imshow(cam,frame)
+		
+		# cv2.imshow(cam,frame)
+		
 		#Before closing it we need to give a wait command, otherwise the open cv wont work
 		# @params with the millisecond of delay 1
 		#cv2.waitKey(1)
